@@ -6,7 +6,7 @@ export interface Course {
   duration: string;
   tags: string[];
   videoUrl: string;
-  thumbnailUrl: string;
+  thumbnailUrl?: string;
 }
 
 export type CourseFormData = Omit<Course, 'id'>;

@@ -27,7 +27,7 @@ const formSchema = z.object({
     message: 'Please provide a comma-separated list of tags.',
   }).transform(value => value.split(',').map(tag => tag.trim())),
   videoUrl: z.string().url({ message: 'Please enter a valid YouTube URL.' }),
-  thumbnailUrl: z.string().url({ message: 'Please enter a valid image URL for the thumbnail.' }),
+  thumbnailUrl: z.string().url({ message: 'Please enter a valid image URL.' }).or(z.literal('')).optional(),
 });
 
 interface CourseFormProps {
@@ -65,9 +65,6 @@ export function CourseForm({ onSubmit, initialData }: CourseFormProps) {
 
   const handleFormSubmit = async (data: z.infer<typeof formSchema>) => {
     setLoading(true);
-    // The 'tags' field is already transformed by Zod into an array of strings.
-    // However, if we need to be extra sure, we can process it again.
-    // The schema transformation should be sufficient.
     await onSubmit(data as CourseFormData);
     setLoading(false);
   };
@@ -167,10 +164,10 @@ export function CourseForm({ onSubmit, initialData }: CourseFormProps) {
             <FormItem>
               <FormLabel>Video Thumbnail Image URL</FormLabel>
               <FormControl>
-                <Input placeholder="https://i.imgur.com/your-image.png" {...field} />
+                <Input placeholder="https://..." {...field} />
               </FormControl>
               <FormDescription>
-                To add a thumbnail, upload your image to a service like Imgur and paste the URL here.
+                Optional. You can host images on a service like Imgur and paste the URL here.
               </FormDescription>
               <FormMessage />
             </FormItem>
