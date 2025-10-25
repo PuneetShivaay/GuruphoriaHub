@@ -167,10 +167,10 @@ export function CourseForm({ onSubmit, initialData }: CourseFormProps) {
             <FormItem>
               <FormLabel>Video Thumbnail Image URL</FormLabel>
               <FormControl>
-                <Input placeholder="https://example.com/image.png" {...field} />
+                <Input placeholder="https://i.imgur.com/your-image.png" {...field} />
               </FormControl>
               <FormDescription>
-                You can host your images on a free service like Imgur and then paste the image URL into the "Video Thumbnail Image URL" field.
+                To add a thumbnail, upload your image to a service like Imgur and paste the URL here.
               </FormDescription>
               <FormMessage />
             </FormItem>
