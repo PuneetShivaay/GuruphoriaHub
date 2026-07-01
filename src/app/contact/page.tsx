@@ -46,23 +46,56 @@ import { useToast } from '@/hooks/use-toast';
 export default function ContactPage() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [category, setCategory] = useState('general');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast({
-        title: "Message Sent!",
-        description: "Thank you for reaching out. I'll get back to you shortly.",
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      subject: formData.get('subject'),
+      category: category,
+      message: formData.get('message'),
+      _subject: "New Contact Request from Guruphoria Website",
+      _captcha: "false"
+    };
+
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/guruphoria@gmail.com", {
+        method: "POST",
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
       });
-    }, 1500);
+
+      if (response.ok) {
+        toast({
+          title: "Message Sent!",
+          description: "Thank you for reaching out. I'll get back to you shortly.",
+        });
+        (e.target as HTMLFormElement).reset();
+        setCategory('general');
+      } else {
+        throw new Error("Form submission failed");
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Submission Error",
+        description: "There was a problem sending your message. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactCards = [
-    { name: 'Email', icon: <Mail />, desc: 'Direct professional inquiries.', link: 'mailto:puneet@guruphoria.com', color: 'text-primary' },
+    { name: 'Email', icon: <Mail />, desc: 'Direct professional inquiries.', link: 'mailto:guruphoria@gmail.com', color: 'text-primary' },
     { name: 'YouTube', icon: <Youtube />, desc: 'Tutorial comments & community.', link: 'https://www.youtube.com/@guruphoria', color: 'text-[#EA3323]' },
     { name: 'GitHub', icon: <Github />, desc: 'Code issues & contributions.', link: 'https://github.com/PuneetShivaay', color: 'text-white' },
     { name: 'Medium', icon: <Newspaper />, desc: 'Article discussions.', link: 'https://puneetshivaay.medium.com/', color: 'text-primary' },
@@ -110,8 +143,10 @@ export default function ContactPage() {
             Whether you have a question, collaboration idea, workshop request, speaking invitation, or simply want to connect, I'd love to hear from you.
           </p>
           <div className="flex flex-wrap justify-center gap-4 pt-4">
-            <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 text-lg font-semibold neon-glow">
-              <Mail className="mr-2 h-5 w-5" /> Email Me
+            <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 text-lg font-semibold neon-glow" asChild>
+              <Link href="mailto:guruphoria@gmail.com">
+                <Mail className="mr-2 h-5 w-5" /> Email Me
+              </Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="rounded-full px-8 text-lg font-semibold glass hover:bg-white/5 border-white/10">
               <Link href="https://www.youtube.com/@guruphoria" target="_blank">
@@ -155,24 +190,29 @@ export default function ContactPage() {
               </div>
               <Card className="glass p-8 border-white/10 bg-[#101828]/60">
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Hidden FormSubmit Fields */}
+                  <input type="hidden" name="_subject" value="New Contact Request from Guruphoria Website" />
+                  <input type="hidden" name="_captcha" value="false" />
+                  <input type="hidden" name="_next" value={typeof window !== 'undefined' ? window.location.href : ''} />
+
                   <div className="grid sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Full Name</label>
-                      <Input placeholder="John Doe" className="bg-black/20 border-white/10 focus:border-primary/50 rounded-xl py-6" required />
+                      <Input name="name" placeholder="John Doe" className="bg-black/20 border-white/10 focus:border-primary/50 rounded-xl py-6" required />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Email Address</label>
-                      <Input type="email" placeholder="john@example.com" className="bg-black/20 border-white/10 focus:border-primary/50 rounded-xl py-6" required />
+                      <Input name="email" type="email" placeholder="john@example.com" className="bg-black/20 border-white/10 focus:border-primary/50 rounded-xl py-6" required />
                     </div>
                   </div>
                   <div className="grid sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Subject</label>
-                      <Input placeholder="How can I help?" className="bg-black/20 border-white/10 focus:border-primary/50 rounded-xl py-6" required />
+                      <Input name="subject" placeholder="How can I help?" className="bg-black/20 border-white/10 focus:border-primary/50 rounded-xl py-6" required />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Category</label>
-                      <Select>
+                      <Select value={category} onValueChange={setCategory}>
                         <SelectTrigger className="bg-black/20 border-white/10 focus:border-primary/50 rounded-xl py-6">
                           <SelectValue placeholder="Select Category" />
                         </SelectTrigger>
@@ -191,6 +231,7 @@ export default function ContactPage() {
                   <div className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Message</label>
                     <Textarea 
+                      name="message"
                       placeholder="Tell me more about your inquiry..." 
                       className="bg-black/20 border-white/10 focus:border-primary/50 rounded-xl min-h-[150px] p-4" 
                       required 
@@ -317,4 +358,3 @@ export default function ContactPage() {
     </div>
   );
 }
-
