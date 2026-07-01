@@ -26,6 +26,7 @@ export function Header() {
     { name: 'Projects', href: '/projects' },
     { name: 'Resources', href: '/resources' },
     { name: 'About', href: '/about' },
+    { name: 'Contact', href: '/contact' },
   ];
 
   return (
@@ -160,3 +161,4 @@ export function Header() {
     </header>
   );
 }
+
