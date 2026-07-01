@@ -8,7 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { getPlaceholderImage } from '@/lib/placeholder-images';
 import { fetchLatestVideos } from '@/lib/youtube';
 import { fetchLatestArticles } from '@/lib/medium';
-import type { YouTubeVideo, MediumArticle } from '@/lib/types';
+import { fetchGitHubRepositories } from '@/lib/github';
+import type { YouTubeVideo, MediumArticle, GitHubRepository } from '@/lib/types';
 import { 
   ArrowRight, 
   Youtube, 
@@ -27,26 +28,33 @@ import {
   Terminal,
   ExternalLink,
   Github,
-  Loader2
+  Loader2,
+  Star,
+  GitFork
 } from 'lucide-react';
 
 export default function Home() {
   const heroImage = getPlaceholderImage('brand-hero');
   const [videos, setVideos] = useState<YouTubeVideo[]>([]);
   const [articles, setArticles] = useState<MediumArticle[]>([]);
+  const [repos, setRepos] = useState<GitHubRepository[]>([]);
   const [isLoadingVideos, setIsLoadingVideos] = useState(true);
   const [isLoadingArticles, setIsLoadingArticles] = useState(true);
+  const [isLoadingRepos, setIsLoadingRepos] = useState(true);
 
   useEffect(() => {
     async function loadData() {
-      const [latestVideos, latestArticles] = await Promise.all([
+      const [latestVideos, latestArticles, latestRepos] = await Promise.all([
         fetchLatestVideos(2),
-        fetchLatestArticles(2)
+        fetchLatestArticles(2),
+        fetchGitHubRepositories(3)
       ]);
       setVideos(latestVideos);
       setArticles(latestArticles);
+      setRepos(latestRepos);
       setIsLoadingVideos(false);
       setIsLoadingArticles(false);
+      setIsLoadingRepos(false);
     }
     loadData();
   }, []);
@@ -71,14 +79,6 @@ export default function Home() {
     { title: 'Full Stack Development', time: '16 Weeks', difficulty: 'Advanced', color: 'from-indigo-500 to-purple-400' },
     { title: 'Prompt Engineering', time: '2 Weeks', difficulty: 'Beginner', color: 'from-green-500 to-emerald-400' },
     { title: 'Automation with AI', time: '6 Weeks', difficulty: 'Intermediate', color: 'from-rose-500 to-orange-400' },
-  ];
-
-  const projects = [
-    { name: 'AI Chatbot', tech: ['Next.js', 'OpenAI', 'Firebase'], icon: <Brain className="h-5 w-5" /> },
-    { name: 'Resume Analyzer', tech: ['Python', 'LangChain', 'React'], icon: <Search className="h-5 w-5" /> },
-    { name: 'React Dashboard', tech: ['React', 'Tailwind', 'Recharts'], icon: <Layers className="h-5 w-5" /> },
-    { name: 'MCP Demo', tech: ['Anthropic', 'Node.js', 'AI'], icon: <Cpu className="h-5 w-5" /> },
-    { name: 'AI Agent', tech: ['Agentic AI', 'AutoGPT', 'Python'], icon: <Sparkles className="h-5 w-5" /> },
   ];
 
   return (
@@ -311,29 +311,49 @@ export default function Home() {
             <p className="text-muted-foreground max-w-2xl mx-auto">Open-source tools and experimental applications built with modern AI stacks.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project) => (
-              <Card key={project.name} className="glass p-8 group hover:border-primary/50 transition-all duration-300 bg-[#101828]/50 border-white/5">
-                <div className="bg-primary/10 w-12 h-12 rounded-xl flex items-center justify-center text-primary mb-6">
-                  {project.icon}
-                </div>
-                <h3 className="text-2xl font-bold mb-4">{project.name}</h3>
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {project.tech.map((t) => (
-                    <Badge key={t} variant="outline" className="text-[10px] border-white/10 text-muted-foreground">{t}</Badge>
-                  ))}
-                </div>
-                <div className="flex gap-4">
-                  <Button asChild variant="outline" size="sm" className="flex-1 glass border-white/10 hover:bg-white/5">
-                    <Link href="https://github.com/PuneetShivaay" target="_blank" rel="noopener noreferrer">
-                      <Github className="mr-2 h-4 w-4" /> Code
-                    </Link>
-                  </Button>
-                  <Button size="sm" className="flex-1 bg-primary/20 text-primary hover:bg-primary/30 border border-primary/20">
-                    <ExternalLink className="mr-2 h-4 w-4" /> Demo
-                  </Button>
-                </div>
-              </Card>
-            ))}
+            {isLoadingRepos ? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <Card key={i} className="glass p-8 bg-[#101828]/50 border-white/5 animate-pulse">
+                  <div className="w-12 h-12 rounded-xl bg-white/5 mb-6" />
+                  <div className="h-8 bg-white/5 rounded w-3/4 mb-4" />
+                  <div className="h-4 bg-white/5 rounded w-full mb-2" />
+                  <div className="h-4 bg-white/5 rounded w-2/3 mb-8" />
+                  <div className="flex gap-4">
+                    <div className="flex-1 h-10 bg-white/5 rounded" />
+                    <div className="flex-1 h-10 bg-white/5 rounded" />
+                  </div>
+                </Card>
+              ))
+            ) : (
+              repos.map((repo) => (
+                <Card key={repo.name} className="glass p-8 group hover:border-primary/50 transition-all duration-300 bg-[#101828]/50 border-white/5">
+                  <div className="bg-primary/10 w-12 h-12 rounded-xl flex items-center justify-center text-primary mb-6">
+                    <Code2 className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4">{repo.name}</h3>
+                  <p className="text-muted-foreground text-sm mb-6 line-clamp-2">{repo.description}</p>
+                  <div className="flex flex-wrap gap-4 mb-8">
+                    <Badge variant="outline" className="text-[10px] border-white/10 text-muted-foreground">{repo.language}</Badge>
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <Star className="h-3 w-3" /> {repo.stars}
+                    </div>
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <GitFork className="h-3 w-3" /> {repo.forks}
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <Button asChild variant="outline" size="sm" className="flex-1 glass border-white/10 hover:bg-white/5">
+                      <Link href={repo.url} target="_blank" rel="noopener noreferrer">
+                        <Github className="mr-2 h-4 w-4" /> Code
+                      </Link>
+                    </Button>
+                    <Button size="sm" className="flex-1 bg-primary/20 text-primary hover:bg-primary/30 border border-primary/20">
+                      <ExternalLink className="mr-2 h-4 w-4" /> Demo
+                    </Button>
+                  </div>
+                </Card>
+              ))
+            )}
           </div>
         </div>
       </section>

@@ -32,3 +32,13 @@ export interface MediumArticle {
   url: string;
   category: string;
 }
+
+export interface GitHubRepository {
+  name: string;
+  description: string;
+  language: string;
+  stars: number;
+  forks: number;
+  updatedAt: string;
+  url: string;
+}

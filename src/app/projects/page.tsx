@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
+import { fetchGitHubRepositories } from '@/lib/github';
+import type { GitHubRepository } from '@/lib/types';
 import { 
   Search, 
   Github, 
@@ -37,6 +39,17 @@ import Link from 'next/link';
 
 export default function ProjectsPage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [repos, setRepos] = useState<GitHubRepository[]>([]);
+  const [isLoadingRepos, setIsLoadingRepos] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      const latestRepos = await fetchGitHubRepositories(6);
+      setRepos(latestRepos);
+      setIsLoadingRepos(false);
+    }
+    loadData();
+  }, []);
 
   const featuredProjects = [
     {
@@ -74,18 +87,17 @@ export default function ProjectsPage() {
     { name: 'Chrome Extensions', icon: <Smartphone />, desc: 'Browser-based productivity tools.', count: 4 },
   ];
 
-  const repositories = [
-    { name: 'guruphoria-ai-starter', desc: 'The ultimate starter kit for building Agentic AI apps with Next.js.', stars: 420, forks: 85, lang: 'TypeScript', updated: '2 days ago' },
-    { name: 'mcp-server-demo', desc: 'Implementation of the Model Context Protocol for Claude/Anthropic.', stars: 156, forks: 24, lang: 'Node.js', updated: '1 week ago' },
-    { name: 'firebase-saas-template', desc: 'Full-featured SaaS boilerplate with Auth, Stripe, and Firestore.', stars: 890, forks: 120, lang: 'React', updated: 'Yesterday' },
-  ];
-
   const workflow = [
     { step: '01', title: 'Idea', desc: 'Defining the core problem and user needs.' },
     { step: '02', title: 'Architecture', desc: 'Designing data models and system flow.' },
     { step: '03', title: 'Development', desc: 'Building with a modular, scalable tech stack.' },
     { step: '04', title: 'Deployment', desc: 'Automating CI/CD and production rollout.' },
   ];
+
+  const filteredRepos = repos.filter(repo => 
+    repo.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    repo.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="flex flex-col bg-[#050816] text-white overflow-hidden min-h-screen">
@@ -140,7 +152,7 @@ export default function ProjectsPage() {
                 <Badge variant="outline" className="border-primary/30 text-primary">Advanced</Badge>
               </div>
             </div>
-            <div className="mt-4 text-xs text-muted-foreground">Showing 24 active projects across 8 categories</div>
+            <div className="mt-4 text-xs text-muted-foreground">Showing {repos.length} active projects across {categories.length} categories</div>
           </Card>
         </div>
       </section>
@@ -233,21 +245,35 @@ export default function ProjectsPage() {
             <h2 className="text-4xl font-bold">Open Source & GitHub</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {repositories.map((repo, idx) => (
-              <Card key={idx} className="glass p-8 border-white/5 hover:border-white/20 transition-all bg-[#0d1117]">
-                <div className="flex justify-between items-start mb-4">
-                  <Link href="#" className="text-primary font-bold text-xl hover:underline truncate mr-4">{repo.name}</Link>
-                  <Badge variant="outline" className="border-white/10 text-[10px] text-muted-foreground">Public</Badge>
-                </div>
-                <p className="text-sm text-muted-foreground mb-8 line-clamp-2 leading-relaxed">{repo.desc}</p>
-                <div className="flex items-center gap-6 text-[10px] text-muted-foreground">
-                  <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-primary"></span> {repo.lang}</div>
-                  <div className="flex items-center gap-1.5"><Star className="h-3 w-3" /> {repo.stars}</div>
-                  <div className="flex items-center gap-1.5"><GitFork className="h-3 w-3" /> {repo.forks}</div>
-                  <div className="ml-auto">Updated {repo.updated}</div>
-                </div>
-              </Card>
-            ))}
+            {isLoadingRepos ? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <Card key={i} className="glass p-8 border-white/5 bg-[#0d1117] animate-pulse">
+                  <div className="h-6 bg-white/5 rounded w-1/2 mb-4" />
+                  <div className="h-4 bg-white/5 rounded w-full mb-2" />
+                  <div className="h-4 bg-white/5 rounded w-3/4 mb-8" />
+                  <div className="flex gap-4">
+                    <div className="h-4 bg-white/5 rounded w-16" />
+                    <div className="h-4 bg-white/5 rounded w-16" />
+                  </div>
+                </Card>
+              ))
+            ) : (
+              filteredRepos.map((repo) => (
+                <Card key={repo.name} className="glass p-8 border-white/5 hover:border-white/20 transition-all bg-[#0d1117]">
+                  <div className="flex justify-between items-start mb-4">
+                    <Link href={repo.url} target="_blank" className="text-primary font-bold text-xl hover:underline truncate mr-4">{repo.name}</Link>
+                    <Badge variant="outline" className="border-white/10 text-[10px] text-muted-foreground">Public</Badge>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-8 line-clamp-2 leading-relaxed">{repo.description}</p>
+                  <div className="flex items-center gap-6 text-[10px] text-muted-foreground">
+                    <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-primary"></span> {repo.language}</div>
+                    <div className="flex items-center gap-1.5"><Star className="h-3 w-3" /> {repo.stars}</div>
+                    <div className="flex items-center gap-1.5"><GitFork className="h-3 w-3" /> {repo.forks}</div>
+                    <div className="ml-auto">Updated {repo.updatedAt}</div>
+                  </div>
+                </Card>
+              ))
+            )}
           </div>
           <div className="mt-12 text-center">
             <Button asChild variant="outline" className="rounded-full border-white/10 glass hover:bg-white/5">
@@ -306,79 +332,6 @@ export default function ProjectsPage() {
               </Card>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Project Resources Cards */}
-      <section className="py-24 px-6 bg-[#101828]/20">
-        <div className="container mx-auto">
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold">Learning Resources</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { title: 'YouTube Tutorial', icon: <Youtube />, link: 'https://www.youtube.com/@guruphoria' },
-              { title: 'Technical Guide', icon: <Newspaper />, link: 'https://puneetshivaay.medium.com/' },
-              { title: 'Source Code', icon: <Github />, link: 'https://github.com/PuneetShivaay' },
-              { title: 'Documentation', icon: <FileText />, link: '#' },
-            ].map((res, idx) => (
-              <Card key={idx} className="glass p-6 flex items-center gap-4 group hover:bg-white/5 border-white/5 transition-all cursor-pointer">
-                <div className="bg-primary/10 w-12 h-12 rounded-xl flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                  {res.icon}
-                </div>
-                <div>
-                  <h5 className="font-bold text-sm">{res.title}</h5>
-                  <p className="text-[10px] text-muted-foreground">Click to access</p>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Spotlight Project */}
-      <section className="py-24 px-6 bg-[#050816]">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold mb-12">Project Spotlight</h2>
-          <Card className="glass overflow-hidden bg-[#101828]/60 border-primary/20 relative">
-            <div className="grid lg:grid-cols-2 items-center">
-              <div className="relative aspect-video lg:h-full">
-                <Image 
-                  src="https://picsum.photos/seed/spotlight/1000/800" 
-                  alt="Spotlight Project" 
-                  fill 
-                  className="object-cover"
-                  data-ai-hint="spotlight project image"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#101828] hidden lg:block"></div>
-              </div>
-              <div className="p-12 space-y-8 relative z-10">
-                <Badge className="bg-primary/20 text-primary border-none">PROJECT OF THE MONTH</Badge>
-                <div className="space-y-4">
-                  <h3 className="text-4xl font-bold">Full-Stack AI SaaS Engine</h3>
-                  <p className="text-muted-foreground leading-relaxed">A complete boilerplate for launching AI-powered SaaS products in days. Includes subscriptions, multi-model AI orchestration, and global state management.</p>
-                </div>
-                <div className="grid sm:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <h5 className="text-xs font-bold text-primary flex items-center gap-2"><CheckCircle2 className="h-3 w-3" /> PROBLEM</h5>
-                    <p className="text-xs text-muted-foreground">Developers struggle to integrate multiple AI providers and handle secure payments.</p>
-                  </div>
-                  <div className="space-y-2">
-                    <h5 className="text-xs font-bold text-primary flex items-center gap-2"><CheckCircle2 className="h-3 w-3" /> SOLUTION</h5>
-                    <p className="text-xs text-muted-foreground">One unified architecture that abstracts AI providers and handles billing natively.</p>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-4 pt-4">
-                  <Button className="bg-primary hover:bg-primary/90 rounded-full px-8">
-                    View Project <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" className="rounded-full px-8 glass border-white/10">
-                    Watch Tutorial
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </Card>
         </div>
       </section>
 
