@@ -1,44 +1,15 @@
 'use client';
-import { CourseForm } from '@/components/admin/course-form';
-import { addDocumentNonBlocking } from '@/firebase';
-import { useFirestore } from '@/firebase';
-import type { CourseFormData } from '@/lib/types';
-import { collection } from 'firebase/firestore';
-import { useRouter } from 'next/navigation';
-import { useToast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function AddCoursePage() {
-  const router = useRouter();
-  const firestore = useFirestore();
-  const { toast } = useToast();
-
-  const handleSubmit = async (data: CourseFormData) => {
-    if (!firestore) return;
-    const coursesCollection = collection(firestore, 'courses');
-    
-    try {
-      await addDocumentNonBlocking(coursesCollection, data);
-      toast({
-        title: 'Course Added',
-        description: `"${data.title}" has been successfully added.`,
-      });
-      router.push('/admin');
-    } catch (error) {
-      console.error('Error adding course:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'There was a problem adding the course. Please try again.',
-      });
-    }
-  };
-
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl md:text-4xl font-headline font-bold mb-8">Add New Course</h1>
-        <CourseForm onSubmit={handleSubmit} />
-      </div>
+    <div className="container mx-auto px-4 py-32 text-center">
+      <h1 className="text-4xl font-headline font-bold mb-4">Admin Access Disabled</h1>
+      <p className="text-muted-foreground mb-8">This section of the platform is currently not in use.</p>
+      <Button asChild rounded-full>
+        <Link href="/">Return to Home</Link>
+      </Button>
     </div>
   );
 }

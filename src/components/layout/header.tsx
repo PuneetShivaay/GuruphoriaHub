@@ -2,9 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Github, Youtube, Newspaper, Search, Menu, X } from 'lucide-react';
-import { useUser } from '@/firebase';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Github, Youtube, Newspaper, Search, Menu } from 'lucide-react';
 import { GuruphoriaLogo } from './logo';
 import { getPlaceholderImage } from '@/lib/placeholder-images';
 import {
@@ -16,7 +14,6 @@ import {
 } from "@/components/ui/sheet";
 
 export function Header() {
-  const { user } = useUser();
   const brandLogo = getPlaceholderImage('brand-logo');
 
   const navLinks = [
@@ -80,15 +77,6 @@ export function Header() {
               </Link>
             </Button>
           </div>
-          
-          {user && (
-            <Link href="/admin">
-              <Avatar className="h-9 w-9 border border-primary/20">
-                <AvatarImage src={user.photoURL ?? ''} />
-                <AvatarFallback className="bg-primary/10 text-primary">{user.displayName?.[0] || 'G'}</AvatarFallback>
-              </Avatar>
-            </Link>
-          )}
           
           <Sheet>
             <SheetTrigger asChild>
@@ -161,4 +149,3 @@ export function Header() {
     </header>
   );
 }
-

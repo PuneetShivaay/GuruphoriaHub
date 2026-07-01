@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Recommendations } from '@/components/ai/recommendations';
 import { 
   Clock, 
   GraduationCap, 
@@ -309,47 +310,7 @@ export default function CoursePage() {
           <div className="lg:col-span-4 space-y-8">
             
             {/* AI Widget */}
-            <Card className="glass border-primary/20 bg-primary/5 overflow-hidden sticky top-24">
-              <div className="bg-primary/10 p-6 border-b border-white/5">
-                <div className="flex items-center gap-2 mb-2">
-                  <Sparkles className="h-5 w-5 text-primary" />
-                  <h3 className="font-bold text-lg">Ask Guruphoria AI</h3>
-                </div>
-                <p className="text-xs text-muted-foreground">Ask questions specifically related to this lesson.</p>
-              </div>
-              <div className="p-6 space-y-6">
-                <div className="space-y-2">
-                  <p className="text-[10px] uppercase text-muted-foreground font-bold tracking-widest">Example Queries</p>
-                  <div className="flex flex-wrap gap-2">
-                    {["Explain MCP", "How Gemini works?", "RAG vs Agentic AI", "Why Firebase?"].map(p => (
-                      <button 
-                        key={p} 
-                        onClick={() => setAiQuery(p)}
-                        className="text-[10px] bg-white/5 hover:bg-white/10 border border-white/10 px-3 py-1.5 rounded-full transition-colors"
-                      >
-                        {p}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="relative">
-                  <Input 
-                    value={aiQuery}
-                    onChange={(e) => setAiQuery(e.target.value)}
-                    placeholder="Ask anything about this lesson..."
-                    className="bg-black/20 border-white/10 rounded-xl pl-4 pr-12 py-6 text-sm"
-                  />
-                  <button className="absolute right-3 top-1/2 -translate-y-1/2 text-primary hover:text-white transition-colors">
-                    <Send className="h-5 w-5" />
-                  </button>
-                </div>
-
-                <div className="text-[10px] text-center text-muted-foreground italic">
-                  Powered by Gemini 1.5 & Genkit
-                </div>
-              </div>
-            </Card>
+            <Recommendations courseTopic={course.title} currentVideo={course.title} />
 
             {/* Downloads */}
             <section className="space-y-4">
