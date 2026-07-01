@@ -322,7 +322,9 @@ export default function Home() {
                             <span>{article.publishedAt}</span>
                           </div>
                           <Button asChild variant="link" className="p-0 h-auto text-primary font-bold hover:no-underline flex items-center gap-1 group/btn">
-                            Read Article <ChevronRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                            <Link href={article.url} target="_blank" className="flex items-center gap-1">
+                              Read Article <ChevronRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                            </Link>
                           </Button>
                         </div>
                       </div>
