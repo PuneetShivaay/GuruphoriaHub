@@ -1,5 +1,11 @@
-import { redirect } from 'next/navigation';
+'use client';
+
+import { useEffect } from 'react';
 
 export default function LegacyViewStub() {
-  redirect('/courses');
+  useEffect(() => {
+    window.location.href = '/courses';
+  }, []);
+
+  return null;
 }

@@ -19,6 +19,7 @@ import { notFound } from 'next/navigation';
 /**
  * @fileOverview The course viewer page.
  * Uses generateStaticParams to pre-build course pages for performance and SEO.
+ * This satisfies the 'output: export' requirement in next.config.ts.
  */
 
 export async function generateStaticParams() {
