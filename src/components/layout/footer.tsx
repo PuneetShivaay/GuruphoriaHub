@@ -1,4 +1,3 @@
-
 import Link from 'next/link';
 import Image from 'next/image';
 import { Github, Youtube, Newspaper, Twitter, Linkedin } from 'lucide-react';
@@ -34,11 +33,21 @@ export function Footer() {
               Empowering the next generation of developers through expert-led AI engineering and modern software development education.
             </p>
             <div className="flex gap-4">
-              <Link href="https://github.com/PuneetShivaay" className="text-muted-foreground hover:text-primary transition-colors"><Github className="h-5 w-5" /></Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors"><Youtube className="h-5 w-5" /></Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors"><Newspaper className="h-5 w-5" /></Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors"><Linkedin className="h-5 w-5" /></Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors"><Twitter className="h-5 w-5" /></Link>
+              <Link href="https://github.com/PuneetShivaay" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                <Github className="h-5 w-5" />
+              </Link>
+              <Link href="https://www.youtube.com/@guruphoria" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                <Youtube className="h-5 w-5" />
+              </Link>
+              <Link href="https://puneetshivaay.medium.com/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                <Newspaper className="h-5 w-5" />
+              </Link>
+              <Link href="https://in.linkedin.com/company/guruphoria" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                <Linkedin className="h-5 w-5" />
+              </Link>
+              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                <Twitter className="h-5 w-5" />
+              </Link>
             </div>
           </div>
           
@@ -56,7 +65,7 @@ export function Footer() {
             <h4 className="font-semibold mb-6">Resources</h4>
             <ul className="space-y-4 text-sm text-muted-foreground">
               <li><Link href="#" className="hover:text-primary transition-colors">Open Source</Link></li>
-              <li><Link href="#" className="hover:text-primary transition-colors">Medium Articles</Link></li>
+              <li><Link href="https://puneetshivaay.medium.com/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Medium Articles</Link></li>
               <li><Link href="#" className="hover:text-primary transition-colors">Newsletter</Link></li>
               <li><Link href="#" className="hover:text-primary transition-colors">Community</Link></li>
             </ul>

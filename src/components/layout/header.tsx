@@ -1,4 +1,3 @@
-
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -50,13 +49,19 @@ export function Header() {
           </Button>
           <div className="hidden md:flex items-center gap-2 border-l border-white/10 pl-3">
             <Button variant="ghost" size="icon" asChild className="text-muted-foreground hover:text-white">
-              <Link href="https://github.com/PuneetShivaay" target="_blank"><Github className="h-5 w-5" /></Link>
+              <Link href="https://github.com/PuneetShivaay" target="_blank" rel="noopener noreferrer">
+                <Github className="h-5 w-5" />
+              </Link>
             </Button>
             <Button variant="ghost" size="icon" asChild className="text-muted-foreground hover:text-white">
-              <Link href="#" target="_blank"><Newspaper className="h-5 w-5" /></Link>
+              <Link href="https://puneetshivaay.medium.com/" target="_blank" rel="noopener noreferrer">
+                <Newspaper className="h-5 w-5" />
+              </Link>
             </Button>
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6 font-semibold hidden lg:flex">
-              <Youtube className="mr-2 h-4 w-4" /> Subscribe
+            <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6 font-semibold hidden lg:flex">
+              <Link href="https://www.youtube.com/@guruphoria" target="_blank" rel="noopener noreferrer">
+                <Youtube className="mr-2 h-4 w-4" /> Subscribe
+              </Link>
             </Button>
           </div>
           

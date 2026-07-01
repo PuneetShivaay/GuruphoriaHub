@@ -1,4 +1,3 @@
-
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -77,11 +76,15 @@ export default function Home() {
               Helping developers and students learn AI, LLM Engineering, Agentic AI, Firebase, React, Next.js, Automation, Machine Learning, and Software Engineering through practical real-world tutorials.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 text-lg font-semibold neon-glow transition-all">
-                <Youtube className="mr-2 h-5 w-5" /> Watch on YouTube
+              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 text-lg font-semibold neon-glow transition-all">
+                <Link href="https://www.youtube.com/@guruphoria" target="_blank" rel="noopener noreferrer">
+                  <Youtube className="mr-2 h-5 w-5" /> Watch on YouTube
+                </Link>
               </Button>
-              <Button size="lg" variant="outline" className="rounded-full px-8 text-lg font-semibold glass hover:bg-white/5 border-white/10">
-                Explore Learning <ArrowRight className="ml-2 h-5 w-5" />
+              <Button asChild size="lg" variant="outline" className="rounded-full px-8 text-lg font-semibold glass hover:bg-white/5 border-white/10">
+                <Link href="/courses">
+                  Explore Learning <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
               </Button>
             </div>
           </div>
@@ -141,7 +144,11 @@ export default function Home() {
               <h2 className="text-4xl font-bold">Featured Learning <span className="text-primary">Paths</span></h2>
               <p className="text-muted-foreground">Master complex topics with these structured roadmaps.</p>
             </div>
-            <Button variant="link" className="text-primary p-0 h-auto">View all roadmaps <ArrowRight className="ml-1 h-4 w-4" /></Button>
+            <Button asChild variant="link" className="text-primary p-0 h-auto">
+              <Link href="/courses">
+                View all roadmaps <ArrowRight className="ml-1 h-4 w-4" />
+              </Link>
+            </Button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {roadmaps.map((path) => (
@@ -168,7 +175,9 @@ export default function Home() {
                 <h2 className="text-3xl font-bold flex items-center gap-3">
                   <Youtube className="text-[#EA3323] h-8 w-8" /> Latest Videos
                 </h2>
-                <Button variant="ghost" className="text-sm hover:text-primary">Visit Channel</Button>
+                <Button asChild variant="ghost" className="text-sm hover:text-primary">
+                  <Link href="https://www.youtube.com/@guruphoria" target="_blank" rel="noopener noreferrer">Visit Channel</Link>
+                </Button>
               </div>
               <div className="grid gap-6">
                 {[1, 2].map((i) => (
@@ -190,7 +199,9 @@ export default function Home() {
                         <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> 2 days ago</span>
                         <span>4.2k views</span>
                       </div>
-                      <Button variant="outline" size="sm" className="w-full mt-2 glass border-white/10">Watch Now</Button>
+                      <Button asChild variant="outline" size="sm" className="w-full mt-2 glass border-white/10">
+                        <Link href="https://www.youtube.com/@guruphoria" target="_blank" rel="noopener noreferrer">Watch Now</Link>
+                      </Button>
                     </div>
                   </Card>
                 ))}
@@ -203,7 +214,9 @@ export default function Home() {
                 <h2 className="text-3xl font-bold flex items-center gap-3">
                   <BookOpen className="text-primary h-8 w-8" /> Medium Stories
                 </h2>
-                <Button variant="ghost" className="text-sm hover:text-primary">Read all</Button>
+                <Button asChild variant="ghost" className="text-sm hover:text-primary">
+                  <Link href="https://puneetshivaay.medium.com/" target="_blank" rel="noopener noreferrer">Read all</Link>
+                </Button>
               </div>
               <div className="grid gap-6">
                 {[1, 2].map((i) => (
@@ -225,7 +238,9 @@ export default function Home() {
                           <span>8 min read</span>
                           <span>Oct 12, 2023</span>
                         </div>
-                        <Button variant="link" className="p-0 h-auto text-primary">Read Article</Button>
+                        <Button asChild variant="link" className="p-0 h-auto text-primary">
+                          <Link href="https://puneetshivaay.medium.com/" target="_blank" rel="noopener noreferrer">Read Article</Link>
+                        </Button>
                       </div>
                     </div>
                   </Card>
@@ -256,8 +271,10 @@ export default function Home() {
                   ))}
                 </div>
                 <div className="flex gap-4">
-                  <Button variant="outline" size="sm" className="flex-1 glass border-white/10 hover:bg-white/5">
-                    <Github className="mr-2 h-4 w-4" /> Code
+                  <Button asChild variant="outline" size="sm" className="flex-1 glass border-white/10 hover:bg-white/5">
+                    <Link href="https://github.com/PuneetShivaay" target="_blank" rel="noopener noreferrer">
+                      <Github className="mr-2 h-4 w-4" /> Code
+                    </Link>
                   </Button>
                   <Button size="sm" className="flex-1 bg-primary/20 text-primary hover:bg-primary/30 border border-primary/20">
                     <ExternalLink className="mr-2 h-4 w-4" /> Demo
