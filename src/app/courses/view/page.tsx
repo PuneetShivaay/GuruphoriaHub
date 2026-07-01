@@ -1,11 +1,12 @@
 import { redirect } from 'next/navigation';
 
 /**
- * @fileOverview Redirects legacy unified viewer links to the new static dynamic routes.
+ * @fileOverview Redirects legacy query-parameter links to the new pre-generated static routes.
  */
-export default function LegacyCourseViewRedirect({ searchParams }: { searchParams: { id?: string } }) {
-  if (searchParams.id) {
-    redirect(`/courses/${searchParams.id}`);
+export default async function LegacyCourseRedirect({ searchParams }: { searchParams: Promise<{ id?: string }> }) {
+  const params = await searchParams;
+  if (params.id) {
+    redirect(`/courses/${params.id}`);
   }
   redirect('/courses');
 }

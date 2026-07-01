@@ -24,8 +24,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 /**
- * @fileOverview The primary course viewer page.
- * Refactored to a Server Component to support static generation (generateStaticParams).
+ * @fileOverview The static course viewer page.
+ * Uses generateStaticParams to pre-build all course pages at build time.
  */
 
 export async function generateStaticParams() {
@@ -53,27 +53,29 @@ export default async function CoursePage({ params }: { params: Promise<{ courseI
     notFound();
   }
 
-  const embedUrl = course.videoUrl.replace("watch?v=", "embed/");
+  // Handle YouTube URL to embed format
+  const videoId = course.videoUrl.split('v=')[1]?.split('&')[0] || course.videoUrl.split('/').pop();
+  const embedUrl = `https://www.youtube.com/embed/${videoId}`;
 
   return (
     <div className="min-h-screen bg-[#050816] text-white pb-20">
-      <div className="container mx-auto px-6 py-6">
-        <nav className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+      {/* Breadcrumbs */}
+      <div className="container mx-auto px-6 py-8">
+        <nav className="flex items-center gap-3 text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
           <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-          <ChevronRight className="h-3 w-3" />
-          <Link href="/explore" className="hover:text-primary transition-colors">Explore</Link>
-          <ChevronRight className="h-3 w-3" />
-          <span className="text-white/60">Tutorials</span>
-          <ChevronRight className="h-3 w-3" />
-          <span className="text-primary truncate max-w-[200px] sm:max-w-none">{course.title}</span>
+          <ChevronRight className="h-3 w-3 text-primary" />
+          <Link href="/courses" className="hover:text-primary transition-colors">Tutorials</Link>
+          <ChevronRight className="h-3 w-3 text-primary" />
+          <span className="text-white/40 truncate max-w-[150px] sm:max-w-none">{course.title}</span>
         </nav>
       </div>
 
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-12 gap-12">
+          {/* Main Content */}
           <div className="lg:col-span-8 space-y-12">
-            <div className="space-y-6">
-              <div className="aspect-video w-full overflow-hidden rounded-2xl glass border-white/10 shadow-2xl relative">
+            <div className="space-y-8">
+              <div className="aspect-video w-full overflow-hidden rounded-3xl glass border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] relative group">
                 <iframe
                   className="w-full h-full"
                   src={embedUrl}
@@ -83,31 +85,33 @@ export default async function CoursePage({ params }: { params: Promise<{ courseI
                 ></iframe>
               </div>
 
-              <div className="space-y-4">
-                <div className="flex flex-wrap items-center justify-between gap-4">
-                  <h1 className="text-3xl md:text-4xl font-headline font-bold leading-tight">{course.title}</h1>
-                  <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" className="glass border-white/10 rounded-full h-9">
+              <div className="space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-headline font-extrabold leading-tight tracking-tight">
+                    {course.title}
+                  </h1>
+                  <div className="flex items-center gap-3">
+                    <Button variant="outline" size="sm" className="glass border-white/10 rounded-full h-10 px-5 font-bold hover:bg-white/5">
                       <Share2 className="h-4 w-4 mr-2" /> Share
                     </Button>
-                    <Button variant="outline" size="sm" className="glass border-white/10 rounded-full h-9">
+                    <Button variant="outline" size="sm" className="glass border-white/10 rounded-full h-10 px-5 font-bold hover:bg-white/5">
                       <Bookmark className="h-4 w-4 mr-2" /> Save
-                    </Button>
+                    </Bookmark>
                   </div>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground bg-white/5 p-4 rounded-xl border border-white/5">
-                  <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground bg-white/5 p-5 rounded-2xl border border-white/5">
+                  <div className="flex items-center gap-2 pr-4 border-r border-white/10">
                     <GraduationCap className="h-4 w-4 text-primary" />
-                    <span>{course.instructor}</span>
+                    <span className="font-bold text-white/80">{course.instructor}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4" />
-                    <span>{course.duration}</span>
+                  <div className="flex items-center gap-2 pr-4 border-r border-white/10">
+                    <Clock className="h-4 w-4 text-primary" />
+                    <span className="font-bold text-white/80">{course.duration}</span>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {course.tags.map(tag => (
-                      <Badge key={tag} variant="secondary" className="bg-primary/10 text-primary border-none text-[10px] uppercase">
+                      <Badge key={tag} variant="secondary" className="bg-primary/10 text-primary border-none text-[9px] font-black uppercase tracking-widest px-3 py-1">
                         {tag}
                       </Badge>
                     ))}
@@ -115,113 +119,121 @@ export default async function CoursePage({ params }: { params: Promise<{ courseI
                 </div>
                 
                 <div className="flex gap-4">
-                  <Button asChild className="bg-primary hover:bg-primary/90 text-white rounded-full px-6 font-bold">
+                  <Button asChild className="bg-[#EA3323] hover:bg-[#EA3323]/90 text-white rounded-full px-8 h-12 font-bold text-lg transition-transform hover:scale-105">
                     <Link href={course.videoUrl} target="_blank">
-                      <Youtube className="h-5 w-5 mr-2" /> Watch on YouTube
+                      <Youtube className="h-6 w-6 mr-2" /> Watch on YouTube
                     </Link>
                   </Button>
                 </div>
               </div>
             </div>
 
+            {/* About Section */}
             <section className="space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="w-1.5 h-8 bg-primary rounded-full"></div>
-                <h2 className="text-2xl font-bold">About this Tutorial</h2>
+              <div className="flex items-center gap-4">
+                <div className="w-1.5 h-8 bg-primary rounded-full shadow-[0_0_15px_rgba(14,165,255,0.5)]"></div>
+                <h2 className="text-3xl font-bold">About this Tutorial</h2>
               </div>
-              <div className="glass p-8 rounded-2xl border-white/5 space-y-6 leading-relaxed text-muted-foreground">
+              <Card className="glass p-10 rounded-[2rem] border-white/5 bg-[#101828]/40 space-y-8 leading-relaxed text-muted-foreground text-lg">
                 <p>{course.description}</p>
                 
-                <div className="grid md:grid-cols-2 gap-8 pt-4">
-                  <div className="space-y-3">
-                    <h3 className="text-white font-semibold flex items-center gap-2">
-                      <Code className="h-4 w-4 text-primary" /> Prerequisites
+                <div className="grid md:grid-cols-2 gap-10 pt-6 border-t border-white/5">
+                  <div className="space-y-4">
+                    <h3 className="text-white font-bold flex items-center gap-3 text-xl">
+                      <Code className="h-6 w-6 text-primary" /> Prerequisites
                     </h3>
-                    <ul className="text-sm list-disc list-inside space-y-1">
-                      <li>Basic JavaScript/TypeScript</li>
-                      <li>Node.js installed</li>
-                      <li>Firebase project setup</li>
+                    <ul className="text-sm space-y-3">
+                      <li className="flex items-start gap-2">
+                        <div className="mt-1 w-1.5 h-1.5 rounded-full bg-primary/40 shrink-0"></div>
+                        <span>Solid understanding of TypeScript / JavaScript</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <div className="mt-1 w-1.5 h-1.5 rounded-full bg-primary/40 shrink-0"></div>
+                        <span>Basic knowledge of Node.js and npm/pnpm</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <div className="mt-1 w-1.5 h-1.5 rounded-full bg-primary/40 shrink-0"></div>
+                        <span>A Firebase account for database services</span>
+                      </li>
                     </ul>
                   </div>
-                  <div className="space-y-3">
-                    <h3 className="text-white font-semibold flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-primary" /> Estimated Time
+                  <div className="space-y-4">
+                    <h3 className="text-white font-bold flex items-center gap-3 text-xl">
+                      <Clock className="h-6 w-6 text-primary" /> Learning Velocity
                     </h3>
-                    <p className="text-sm">Approximately {course.duration} for content + 2 hours for practice.</p>
+                    <p className="text-sm leading-relaxed">
+                      This is an intensive lab. Expect to spend approximately <span className="text-primary font-bold">{course.duration}</span> watching the content and an additional <span className="text-primary font-bold">2-4 hours</span> implementation and debugging.
+                    </p>
                   </div>
                 </div>
-              </div>
+              </Card>
             </section>
 
-            <section className="space-y-6">
-              <h2 className="text-2xl font-bold">What You'll Learn</h2>
-              <div className="grid sm:grid-cols-2 gap-4">
+            {/* Learning Outcomes */}
+            <section className="space-y-8">
+              <h2 className="text-3xl font-bold">Core Competencies</h2>
+              <div className="grid sm:grid-cols-2 gap-5">
                 {[
-                  "Understand Agentic AI Concepts",
-                  "Build Scalable AI Workflows",
-                  "Connect Gemini & Anthropic APIs",
-                  "Real-time Firebase Integration",
-                  "Secure Deployment Strategies",
-                  "Advanced Prompt Engineering"
+                  "Architectural System Design",
+                  "Agentic AI Implementation",
+                  "Advanced LLM Integration",
+                  "Production-Ready Deployment",
+                  "Real-time Data Management",
+                  "Secure Auth Workflows"
                 ].map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-3 bg-white/5 p-4 rounded-xl border border-white/5 group hover:border-primary/50 transition-colors">
-                    <CheckCircle2 className="h-5 w-5 text-primary" />
-                    <span className="text-sm text-foreground/80">{item}</span>
+                  <div key={idx} className="flex items-center gap-4 bg-[#101828]/60 p-6 rounded-2xl border border-white/5 group hover:border-primary/50 transition-all cursor-default">
+                    <CheckCircle2 className="h-6 w-6 text-primary group-hover:scale-110 transition-transform" />
+                    <span className="font-bold text-white/90">{item}</span>
                   </div>
-                ))}
-              </div>
-            </section>
-
-            <section className="space-y-6">
-              <h2 className="text-2xl font-bold">Project Resources</h2>
-              <div className="grid sm:grid-cols-2 gap-6">
-                {[
-                  { title: "GitHub Repository", icon: <Github />, desc: "Complete source code with documentation.", link: "https://github.com/PuneetShivaay" },
-                  { title: "Live Demo", icon: <ExternalLink />, desc: "See the final application in action.", link: "#" },
-                  { title: "API References", icon: <Code />, desc: "Documentation for all integrated services.", link: "#" },
-                  { title: "Documentation", icon: <FileText />, desc: "Step-by-step written tutorial guide.", link: "#" }
-                ].map((res, idx) => (
-                  <Card key={idx} className="glass p-6 group hover:border-primary/50 transition-all bg-[#101828]/50 border-white/5">
-                    <div className="bg-primary/10 w-10 h-10 rounded-lg flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
-                      {res.icon}
-                    </div>
-                    <h3 className="text-lg font-bold mb-2">{res.title}</h3>
-                    <p className="text-xs text-muted-foreground mb-4">{res.desc}</p>
-                    <Button variant="link" asChild className="p-0 h-auto text-primary text-xs flex items-center gap-2 group">
-                      <Link href={res.link} className="flex items-center">
-                        Explore <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform ml-2" />
-                      </Link>
-                    </Button>
-                  </Card>
                 ))}
               </div>
             </section>
           </div>
 
-          <div className="lg:col-span-4 space-y-8">
+          {/* Sidebar */}
+          <div className="lg:col-span-4 space-y-10">
             <Recommendations courseTopic={course.title} currentVideo={course.title} />
 
-            <section className="space-y-4">
-              <h3 className="font-bold text-lg px-2 text-white">Resources</h3>
-              <div className="space-y-3">
+            <section className="space-y-6">
+              <h3 className="font-bold text-xl px-2 text-white flex items-center gap-2">
+                <FileText className="h-5 w-5 text-primary" /> Lab Resources
+              </h3>
+              <div className="space-y-4">
                 {[
-                  { title: "Presentation Slides", type: "PDF", size: "2.4 MB" },
-                  { title: "Project Assets", type: "ZIP", size: "15.8 MB" },
-                  { title: "Cheat Sheet", type: "PDF", size: "1.1 MB" },
-                  { title: "Prompt Pack", type: "JSON", size: "0.4 MB" }
+                  { title: "Presentation Slides", type: "PDF", size: "2.4 MB", icon: <Download /> },
+                  { title: "Project Starter Kit", type: "ZIP", size: "15.8 MB", icon: <Download /> },
+                  { title: "Architecture Diagram", type: "PNG", size: "1.2 MB", icon: <Download /> },
+                  { title: "Prompt Engineering Pack", type: "JSON", size: "0.4 MB", icon: <Download /> }
                 ].map((item, idx) => (
-                  <button key={idx} className="w-full glass p-4 rounded-xl flex items-center justify-between group hover:bg-white/5 border-white/5 transition-all">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-white/5 rounded-lg text-muted-foreground group-hover:text-primary transition-colors">
-                        <Download className="h-4 w-4" />
+                  <button key={idx} className="w-full glass p-5 rounded-2xl flex items-center justify-between group hover:bg-white/5 border-white/5 transition-all">
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 bg-white/5 rounded-xl text-muted-foreground group-hover:text-primary group-hover:bg-primary/10 transition-all">
+                        {item.icon}
                       </div>
                       <div className="text-left">
-                        <div className="text-sm font-semibold text-white">{item.title}</div>
-                        <div className="text-[10px] text-muted-foreground uppercase">{item.type} • {item.size}</div>
+                        <div className="text-sm font-bold text-white group-hover:text-primary transition-colors">{item.title}</div>
+                        <div className="text-[9px] text-muted-foreground uppercase font-black tracking-widest mt-0.5">{item.type} • {item.size}</div>
                       </div>
                     </div>
                   </button>
                 ))}
+              </div>
+            </section>
+
+            {/* Quick Links */}
+            <section className="glass p-8 rounded-[2rem] border-white/5 bg-gradient-to-br from-[#101828]/80 to-transparent space-y-6">
+              <h3 className="font-bold text-lg">Quick Access</h3>
+              <div className="space-y-4">
+                <Button asChild variant="ghost" className="w-full justify-start text-muted-foreground hover:text-primary hover:bg-white/5 h-12 font-bold px-4">
+                  <Link href="https://github.com/PuneetShivaay" target="_blank">
+                    <Github className="h-5 w-5 mr-3" /> GitHub Repo
+                  </Link>
+                </Button>
+                <Button asChild variant="ghost" className="w-full justify-start text-muted-foreground hover:text-primary hover:bg-white/5 h-12 font-bold px-4">
+                  <Link href="/contact">
+                    <ExternalLink className="h-5 w-5 mr-3" /> Technical Support
+                  </Link>
+                </Button>
               </div>
             </section>
           </div>
