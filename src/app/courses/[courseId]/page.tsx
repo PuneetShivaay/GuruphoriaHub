@@ -1,3 +1,4 @@
+
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { initializeFirebase } from '@/firebase';
 import type { Course } from '@/lib/types';
@@ -55,7 +56,8 @@ interface PageProps {
 }
 
 export default async function CoursePage({ params }: PageProps) {
-  const { courseId } = await params;
+  const resolvedParams = await params;
+  const courseId = resolvedParams.courseId;
   const course = await getCourse(courseId);
 
   if (!course) {

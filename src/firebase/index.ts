@@ -1,3 +1,4 @@
+
 import { firebaseConfig } from '@/firebase/config';
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
@@ -11,16 +12,11 @@ import { getFirestore } from 'firebase/firestore';
 export function initializeFirebase() {
   let app: FirebaseApp;
   
-  if (!getApps().length) {
-    try {
-      // Attempt to initialize via Firebase App Hosting environment variables (preferred in production)
-      app = initializeApp();
-    } catch (e) {
-      // Fallback to config object for local development
-      app = initializeApp(firebaseConfig);
-    }
+  const apps = getApps();
+  if (!apps.length) {
+    app = initializeApp(firebaseConfig);
   } else {
-    app = getApp();
+    app = apps[0];
   }
 
   return {

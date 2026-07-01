@@ -1,11 +1,15 @@
+
 'use client';
 
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function LegacyViewStub() {
+  const router = useRouter();
+
   useEffect(() => {
-    window.location.href = '/courses';
-  }, []);
+    router.replace('/courses');
+  }, [router]);
 
   return null;
 }
