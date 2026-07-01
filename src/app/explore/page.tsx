@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { fetchLatestVideos } from '@/lib/youtube';
-import type { YouTubeVideo } from '@/lib/types';
+import { fetchLatestArticles } from '@/lib/medium';
+import type { YouTubeVideo, MediumArticle } from '@/lib/types';
 import { 
   Search, 
   Sparkles, 
@@ -37,13 +38,20 @@ import Link from 'next/link';
 export default function ExplorePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [videos, setVideos] = useState<YouTubeVideo[]>([]);
+  const [articles, setArticles] = useState<MediumArticle[]>([]);
   const [isLoadingVideos, setIsLoadingVideos] = useState(true);
+  const [isLoadingArticles, setIsLoadingArticles] = useState(true);
 
   useEffect(() => {
     async function loadData() {
-      const latestVideos = await fetchLatestVideos(6);
+      const [latestVideos, latestArticles] = await Promise.all([
+        fetchLatestVideos(6),
+        fetchLatestArticles(4)
+      ]);
       setVideos(latestVideos);
+      setArticles(latestArticles);
       setIsLoadingVideos(false);
+      setIsLoadingArticles(false);
     }
     loadData();
   }, []);
@@ -86,13 +94,6 @@ export default function ExplorePage() {
     { title: 'Firebase SaaS Starter', desc: 'The ultimate boilerplate for Firebase.', tech: ['React', 'Firebase'], diff: 'Medium' },
     { title: 'React Admin Dashboard', desc: 'Modern dashboard for data visualization.', tech: ['React', 'Tailwind'], diff: 'Easy' },
     { title: 'Chrome AI Extension', desc: 'Summarize web pages using Local LLM.', tech: ['JS', 'WebGPU'], diff: 'Medium' },
-  ];
-
-  const articles = [
-    { title: 'The Rise of Agentic AI Workflows', time: '8 min', date: 'Oct 22', category: 'AI Trends' },
-    { title: 'Why I Switched to Next.js 15', time: '5 min', date: 'Oct 18', category: 'Web Dev' },
-    { title: 'Firebase vs Supabase in 2024', time: '12 min', date: 'Oct 14', category: 'Backend' },
-    { title: 'Deep Dive into Prompt Engineering', time: '10 min', date: 'Oct 10', category: 'AI Engineering' },
   ];
 
   const technologies = [
@@ -337,32 +338,47 @@ export default function ExplorePage() {
             </Button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {articles.map((art, idx) => (
-              <Card key={idx} className="glass p-6 flex gap-6 group bg-[#101828]/50 border-white/5">
-                <div className="hidden sm:block relative w-40 h-40 rounded-xl overflow-hidden shrink-0 border border-white/5">
-                  <Image 
-                    src={`https://picsum.photos/seed/explore-art-${idx}/300/300`} 
-                    alt="Article" 
-                    fill 
-                    className="object-cover group-hover:scale-110 transition-all duration-500"
-                    data-ai-hint="blog cover"
-                  />
-                </div>
-                <div className="space-y-4 flex-grow flex flex-col">
-                  <Badge variant="outline" className="w-fit border-primary/20 text-primary text-[10px]">{art.category}</Badge>
-                  <h4 className="font-bold text-xl group-hover:text-primary transition-colors leading-tight line-clamp-2">{art.title}</h4>
-                  <div className="mt-auto pt-4 flex items-center justify-between">
-                    <div className="flex items-center gap-4 text-[10px] text-muted-foreground">
-                      <span>{art.time} read</span>
-                      <span>{art.date}</span>
-                    </div>
-                    <Button variant="link" className="p-0 h-auto text-primary text-xs">
-                      Read More <ArrowRight className="ml-1 h-3 w-3" />
-                    </Button>
+            {isLoadingArticles ? (
+              Array.from({ length: 4 }).map((_, i) => (
+                <Card key={i} className="glass p-6 flex gap-6 bg-[#101828]/50 border-white/5 animate-pulse">
+                  <div className="hidden sm:block w-40 h-40 bg-white/5 rounded-xl shrink-0" />
+                  <div className="space-y-4 flex-grow">
+                    <div className="h-4 bg-white/5 rounded w-1/4" />
+                    <div className="h-6 bg-white/5 rounded w-3/4" />
+                    <div className="h-4 bg-white/5 rounded w-1/2" />
                   </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              ))
+            ) : (
+              articles.map((art) => (
+                <Card key={art.id} className="glass p-6 flex gap-6 group bg-[#101828]/50 border-white/5">
+                  <div className="hidden sm:block relative w-40 h-40 rounded-xl overflow-hidden shrink-0 border border-white/5">
+                    <Image 
+                      src={art.coverImage} 
+                      alt={art.title} 
+                      fill 
+                      className="object-cover group-hover:scale-110 transition-all duration-500"
+                      data-ai-hint="blog cover"
+                    />
+                  </div>
+                  <div className="space-y-4 flex-grow flex flex-col">
+                    <Badge variant="outline" className="w-fit border-primary/20 text-primary text-[10px]">{art.category}</Badge>
+                    <h4 className="font-bold text-xl group-hover:text-primary transition-colors leading-tight line-clamp-2">{art.title}</h4>
+                    <div className="mt-auto pt-4 flex items-center justify-between">
+                      <div className="flex items-center gap-4 text-[10px] text-muted-foreground">
+                        <span>{art.readingTime} read</span>
+                        <span>{art.publishedAt}</span>
+                      </div>
+                      <Button variant="link" className="p-0 h-auto text-primary text-xs" asChild>
+                        <Link href={art.url} target="_blank" rel="noopener noreferrer">
+                          Read More <ArrowRight className="ml-1 h-3 w-3" />
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))
+            )}
           </div>
         </div>
       </section>
@@ -394,19 +410,21 @@ export default function ExplorePage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {[
-              { name: 'YouTube', icon: <Youtube />, desc: '10k+ Subscribers', color: 'text-[#EA3323]' },
-              { name: 'GitHub', icon: <Github />, desc: 'Open Source Labs', color: 'text-white' },
-              { name: 'Medium', icon: <Newspaper />, desc: 'Weekly Technical Blogs', color: 'text-primary' },
-              { name: 'LinkedIn', icon: <Linkedin />, desc: 'Professional Updates', color: 'text-[#0077B5]' },
-              { name: 'Twitter/X', icon: <Twitter />, desc: 'Daily Dev Tips', color: 'text-white' },
-              { name: 'Discord', icon: <MessageSquare />, desc: 'Coming Soon', color: 'text-[#5865F2]' },
-              { name: 'Telegram', icon: <Send />, desc: 'Coming Soon', color: 'text-[#26A5E4]' },
+              { name: 'YouTube', icon: <Youtube />, desc: '10k+ Subscribers', color: 'text-[#EA3323]', link: 'https://www.youtube.com/@guruphoria' },
+              { name: 'GitHub', icon: <Github />, desc: 'Open Source Labs', color: 'text-white', link: 'https://github.com/PuneetShivaay' },
+              { name: 'Medium', icon: <Newspaper />, desc: 'Weekly Technical Blogs', color: 'text-primary', link: 'https://puneetshivaay.medium.com/' },
+              { name: 'LinkedIn', icon: <Linkedin />, desc: 'Professional Updates', color: 'text-[#0077B5]', link: 'https://in.linkedin.com/company/guruphoria' },
+              { name: 'Twitter/X', icon: <Twitter />, desc: 'Daily Dev Tips', color: 'text-white', link: '#' },
+              { name: 'Discord', icon: <MessageSquare />, desc: 'Coming Soon', color: 'text-[#5865F2]', link: '#' },
+              { name: 'Telegram', icon: <Send />, desc: 'Coming Soon', color: 'text-[#26A5E4]', link: '#' },
             ].map((social) => (
               <Card key={social.name} className="glass p-6 group hover:bg-white/5 transition-all border-white/5">
                 <div className={`${social.color} mb-4 group-hover:scale-110 transition-transform`}>{social.icon}</div>
                 <h4 className="font-bold mb-1">{social.name}</h4>
                 <p className="text-xs text-muted-foreground mb-4">{social.desc}</p>
-                <Button variant="outline" size="sm" className="w-full glass border-white/10 hover:border-primary/30">Connect</Button>
+                <Button variant="outline" size="sm" className="w-full glass border-white/10 hover:border-primary/30" asChild>
+                  <Link href={social.link} target="_blank">Connect</Link>
+                </Button>
               </Card>
             ))}
           </div>

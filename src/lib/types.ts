@@ -21,3 +21,14 @@ export interface YouTubeVideo {
   viewCount: string;
   videoUrl: string;
 }
+
+export interface MediumArticle {
+  id: string;
+  title: string;
+  summary: string;
+  coverImage: string;
+  readingTime: string;
+  publishedAt: string;
+  url: string;
+  category: string;
+}

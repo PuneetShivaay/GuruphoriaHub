@@ -7,7 +7,8 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { getPlaceholderImage } from '@/lib/placeholder-images';
 import { fetchLatestVideos } from '@/lib/youtube';
-import type { YouTubeVideo } from '@/lib/types';
+import { fetchLatestArticles } from '@/lib/medium';
+import type { YouTubeVideo, MediumArticle } from '@/lib/types';
 import { 
   ArrowRight, 
   Youtube, 
@@ -32,13 +33,20 @@ import {
 export default function Home() {
   const heroImage = getPlaceholderImage('brand-hero');
   const [videos, setVideos] = useState<YouTubeVideo[]>([]);
+  const [articles, setArticles] = useState<MediumArticle[]>([]);
   const [isLoadingVideos, setIsLoadingVideos] = useState(true);
+  const [isLoadingArticles, setIsLoadingArticles] = useState(true);
 
   useEffect(() => {
     async function loadData() {
-      const latestVideos = await fetchLatestVideos(2);
+      const [latestVideos, latestArticles] = await Promise.all([
+        fetchLatestVideos(2),
+        fetchLatestArticles(2)
+      ]);
       setVideos(latestVideos);
+      setArticles(latestArticles);
       setIsLoadingVideos(false);
+      setIsLoadingArticles(false);
     }
     loadData();
   }, []);
@@ -246,32 +254,49 @@ export default function Home() {
                 </Button>
               </div>
               <div className="grid gap-6">
-                {[1, 2].map((i) => (
-                  <Card key={i} className="glass p-6 flex gap-6 group bg-[#101828]/50 border-white/5">
-                    <div className="hidden sm:block relative w-32 h-32 rounded-xl overflow-hidden shrink-0 border border-white/5">
-                      <Image 
-                        src={`https://picsum.photos/seed/art${i}/300/300`} 
-                        alt="Article Image" 
-                        fill 
-                        className="object-cover group-hover:scale-110 transition-transform duration-500"
-                        data-ai-hint="article header"
-                      />
-                    </div>
-                    <div className="space-y-3 flex-grow">
-                      <Badge variant="secondary" className="bg-primary/10 text-primary border-none text-[10px] uppercase">AI & Engineering</Badge>
-                      <h4 className="font-bold text-xl group-hover:text-primary transition-colors leading-tight">The Future of Software Development: AI Agents and the Death of Coding?</h4>
-                      <div className="flex items-center justify-between mt-auto pt-2">
-                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                          <span>8 min read</span>
-                          <span>Oct 12, 2023</span>
-                        </div>
-                        <Button asChild variant="link" className="p-0 h-auto text-primary">
-                          <Link href="https://puneetshivaay.medium.com/" target="_blank" rel="noopener noreferrer">Read Article</Link>
-                        </Button>
+                {isLoadingArticles ? (
+                  Array.from({ length: 2 }).map((_, i) => (
+                    <Card key={i} className="glass p-6 flex gap-6 bg-[#101828]/50 border-white/5 animate-pulse">
+                      <div className="w-32 h-32 bg-white/5 rounded-xl shrink-0" />
+                      <div className="space-y-3 flex-grow">
+                        <div className="h-4 bg-white/5 rounded w-1/4" />
+                        <div className="h-6 bg-white/5 rounded w-3/4" />
+                        <div className="h-4 bg-white/5 rounded w-1/2" />
                       </div>
-                    </div>
-                  </Card>
-                ))}
+                    </Card>
+                  ))
+                ) : (
+                  articles.map((article) => (
+                    <Card key={article.id} className="glass p-6 flex gap-6 group bg-[#101828]/50 border-white/5">
+                      <div className="hidden sm:block relative w-32 h-32 rounded-xl overflow-hidden shrink-0 border border-white/5">
+                        <Image 
+                          src={article.coverImage} 
+                          alt={article.title} 
+                          fill 
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
+                          data-ai-hint="article header"
+                        />
+                      </div>
+                      <div className="space-y-3 flex-grow flex flex-col">
+                        <Badge variant="secondary" className="bg-primary/10 text-primary border-none text-[10px] uppercase w-fit">
+                          {article.category}
+                        </Badge>
+                        <h4 className="font-bold text-xl group-hover:text-primary transition-colors leading-tight line-clamp-2">
+                          {article.title}
+                        </h4>
+                        <div className="flex items-center justify-between mt-auto pt-2">
+                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <span>{article.readingTime}</span>
+                            <span>{article.publishedAt}</span>
+                          </div>
+                          <Button asChild variant="link" className="p-0 h-auto text-primary">
+                            <Link href={article.url} target="_blank" rel="noopener noreferrer">Read Article</Link>
+                          </Button>
+                        </div>
+                      </div>
+                    </Card>
+                  ))
+                )}
               </div>
             </div>
           </div>
