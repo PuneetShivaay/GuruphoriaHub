@@ -1,3 +1,6 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Github, Youtube, Newspaper, Twitter, Linkedin, Mail, ExternalLink, Globe, ChevronRight, ArrowRight } from 'lucide-react';
@@ -5,8 +8,12 @@ import { GuruphoriaLogo } from './logo';
 import { getPlaceholderImage } from '@/lib/placeholder-images';
 
 export function Footer() {
-  const year = new Date().getFullYear();
+  const [year, setYear] = useState(2024);
   const brandLogo = getPlaceholderImage('brand-logo');
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
 
   const footerLinks = {
     learning: [
@@ -81,7 +88,7 @@ export function Footer() {
               {footerLinks.learning.map((link) => (
                 <li key={link.name}>
                   <Link href={link.href} className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
-                    {link.name} <ArrowRightIcon className="h-3 w-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                    {link.name} <ArrowRight className="h-3 w-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                   </Link>
                 </li>
               ))}
@@ -144,14 +151,7 @@ export function Footer() {
         </div>
       </div>
       
-      {/* Scroll to top decorative element */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
     </footer>
   );
 }
-
-const ArrowRightIcon = ({ className }: { className?: string }) => (
-  <svg className={className} width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M4.5 9L7.5 6L4.5 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
