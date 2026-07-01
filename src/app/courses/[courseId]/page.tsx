@@ -12,13 +12,8 @@ import {
   Youtube, 
   Share2, 
   Bookmark, 
-  Github, 
-  ExternalLink, 
   Code, 
-  Download, 
-  FileText, 
-  CheckCircle2,
-  ArrowRight
+  CheckCircle2
 } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -29,23 +24,37 @@ import { notFound } from 'next/navigation';
  */
 
 export async function generateStaticParams() {
-  const { firestore } = initializeFirebase();
-  const coursesCol = collection(firestore, 'courses');
-  const coursesSnapshot = await getDocs(coursesCol);
-  return coursesSnapshot.docs.map(doc => ({
-    courseId: doc.id,
-  }));
+  try {
+    const { firestore } = initializeFirebase();
+    const coursesCol = collection(firestore, 'courses');
+    const coursesSnapshot = await getDocs(coursesCol);
+    return coursesSnapshot.docs.map(doc => ({
+      courseId: doc.id,
+    }));
+  } catch (error) {
+    console.error('Error in generateStaticParams:', error);
+    return [];
+  }
 }
 
 async function getCourse(id: string) {
-  const { firestore } = initializeFirebase();
-  const courseRef = doc(firestore, 'courses', id);
-  const courseSnap = await getDoc(courseRef);
-  if (!courseSnap.exists()) return null;
-  return { ...courseSnap.data(), id: courseSnap.id } as Course;
+  try {
+    const { firestore } = initializeFirebase();
+    const courseRef = doc(firestore, 'courses', id);
+    const courseSnap = await getDoc(courseRef);
+    if (!courseSnap.exists()) return null;
+    return { ...courseSnap.data(), id: courseSnap.id } as Course;
+  } catch (error) {
+    console.error('Error fetching course:', error);
+    return null;
+  }
 }
 
-export default async function CoursePage({ params }: { params: Promise<{ courseId: string }> }) {
+interface PageProps {
+  params: Promise<{ courseId: string }>;
+}
+
+export default async function CoursePage({ params }: PageProps) {
   const { courseId } = await params;
   const course = await getCourse(courseId);
 
@@ -53,8 +62,9 @@ export default async function CoursePage({ params }: { params: Promise<{ courseI
     notFound();
   }
 
-  // Handle YouTube URL to embed format
-  const videoId = course.videoUrl.split('v=')[1]?.split('&')[0] || course.videoUrl.split('/').pop();
+  // Handle YouTube URL to embed format safely
+  const videoUrl = course.videoUrl || '';
+  const videoId = videoUrl.split('v=')[1]?.split('&')[0] || videoUrl.split('/').pop() || '';
   const embedUrl = `https://www.youtube.com/embed/${videoId}`;
 
   return (
@@ -75,7 +85,7 @@ export default async function CoursePage({ params }: { params: Promise<{ courseI
           {/* Main Content */}
           <div className="lg:col-span-8 space-y-12">
             <div className="space-y-8">
-              <div className="aspect-video w-full overflow-hidden rounded-3xl glass border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] relative group">
+              <div className="aspect-video w-full overflow-hidden rounded-3xl glass border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] relative">
                 <iframe
                   className="w-full h-full"
                   src={embedUrl}
@@ -96,7 +106,7 @@ export default async function CoursePage({ params }: { params: Promise<{ courseI
                     </Button>
                     <Button variant="outline" size="sm" className="glass border-white/10 rounded-full h-10 px-5 font-bold hover:bg-white/5">
                       <Bookmark className="h-4 w-4 mr-2" /> Save
-                    </Bookmark>
+                    </Button>
                   </div>
                 </div>
 
@@ -110,7 +120,7 @@ export default async function CoursePage({ params }: { params: Promise<{ courseI
                     <span className="font-bold text-white/80">{course.duration}</span>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {course.tags.map(tag => (
+                    {course.tags?.map(tag => (
                       <Badge key={tag} variant="secondary" className="bg-primary/10 text-primary border-none text-[9px] font-black uppercase tracking-widest px-3 py-1">
                         {tag}
                       </Badge>
@@ -145,15 +155,11 @@ export default async function CoursePage({ params }: { params: Promise<{ courseI
                     <ul className="text-sm space-y-3">
                       <li className="flex items-start gap-2">
                         <div className="mt-1 w-1.5 h-1.5 rounded-full bg-primary/40 shrink-0"></div>
-                        <span>Solid understanding of TypeScript / JavaScript</span>
+                        <span>Solid understanding of TypeScript</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <div className="mt-1 w-1.5 h-1.5 rounded-full bg-primary/40 shrink-0"></div>
-                        <span>Basic knowledge of Node.js and npm/pnpm</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <div className="mt-1 w-1.5 h-1.5 rounded-full bg-primary/40 shrink-0"></div>
-                        <span>A Firebase account for database services</span>
+                        <span>Basic knowledge of Node.js</span>
                       </li>
                     </ul>
                   </div>
@@ -162,7 +168,7 @@ export default async function CoursePage({ params }: { params: Promise<{ courseI
                       <Clock className="h-6 w-6 text-primary" /> Learning Velocity
                     </h3>
                     <p className="text-sm leading-relaxed">
-                      This is an intensive lab. Expect to spend approximately <span className="text-primary font-bold">{course.duration}</span> watching the content and an additional <span className="text-primary font-bold">2-4 hours</span> implementation and debugging.
+                      This is an intensive lab. Expect to spend approximately <span className="text-primary font-bold">{course.duration}</span> watching the content.
                     </p>
                   </div>
                 </div>
@@ -177,9 +183,7 @@ export default async function CoursePage({ params }: { params: Promise<{ courseI
                   "Architectural System Design",
                   "Agentic AI Implementation",
                   "Advanced LLM Integration",
-                  "Production-Ready Deployment",
-                  "Real-time Data Management",
-                  "Secure Auth Workflows"
+                  "Production-Ready Deployment"
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-center gap-4 bg-[#101828]/60 p-6 rounded-2xl border border-white/5 group hover:border-primary/50 transition-all cursor-default">
                     <CheckCircle2 className="h-6 w-6 text-primary group-hover:scale-110 transition-transform" />
@@ -193,49 +197,6 @@ export default async function CoursePage({ params }: { params: Promise<{ courseI
           {/* Sidebar */}
           <div className="lg:col-span-4 space-y-10">
             <Recommendations courseTopic={course.title} currentVideo={course.title} />
-
-            <section className="space-y-6">
-              <h3 className="font-bold text-xl px-2 text-white flex items-center gap-2">
-                <FileText className="h-5 w-5 text-primary" /> Lab Resources
-              </h3>
-              <div className="space-y-4">
-                {[
-                  { title: "Presentation Slides", type: "PDF", size: "2.4 MB", icon: <Download /> },
-                  { title: "Project Starter Kit", type: "ZIP", size: "15.8 MB", icon: <Download /> },
-                  { title: "Architecture Diagram", type: "PNG", size: "1.2 MB", icon: <Download /> },
-                  { title: "Prompt Engineering Pack", type: "JSON", size: "0.4 MB", icon: <Download /> }
-                ].map((item, idx) => (
-                  <button key={idx} className="w-full glass p-5 rounded-2xl flex items-center justify-between group hover:bg-white/5 border-white/5 transition-all">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 bg-white/5 rounded-xl text-muted-foreground group-hover:text-primary group-hover:bg-primary/10 transition-all">
-                        {item.icon}
-                      </div>
-                      <div className="text-left">
-                        <div className="text-sm font-bold text-white group-hover:text-primary transition-colors">{item.title}</div>
-                        <div className="text-[9px] text-muted-foreground uppercase font-black tracking-widest mt-0.5">{item.type} • {item.size}</div>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </section>
-
-            {/* Quick Links */}
-            <section className="glass p-8 rounded-[2rem] border-white/5 bg-gradient-to-br from-[#101828]/80 to-transparent space-y-6">
-              <h3 className="font-bold text-lg">Quick Access</h3>
-              <div className="space-y-4">
-                <Button asChild variant="ghost" className="w-full justify-start text-muted-foreground hover:text-primary hover:bg-white/5 h-12 font-bold px-4">
-                  <Link href="https://github.com/PuneetShivaay" target="_blank">
-                    <Github className="h-5 w-5 mr-3" /> GitHub Repo
-                  </Link>
-                </Button>
-                <Button asChild variant="ghost" className="w-full justify-start text-muted-foreground hover:text-primary hover:bg-white/5 h-12 font-bold px-4">
-                  <Link href="/contact">
-                    <ExternalLink className="h-5 w-5 mr-3" /> Technical Support
-                  </Link>
-                </Button>
-              </div>
-            </section>
           </div>
         </div>
       </div>

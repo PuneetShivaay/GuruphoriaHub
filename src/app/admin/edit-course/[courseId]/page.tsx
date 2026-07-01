@@ -1,14 +1,24 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ShieldAlert } from 'lucide-react';
 
 /**
  * @fileOverview Deactivated Admin Page. 
- * Replaced dynamic route with a static "Restricted Access" stub to resolve build-time errors.
+ * Includes generateStaticParams to resolve build errors for the static export configuration.
  */
-export default function DeactivatedAdminPage() {
+
+export async function generateStaticParams() {
+  return []; // No admin pages are statically generated as the dashboard is offline.
+}
+
+interface PageProps {
+  params: Promise<{ courseId: string }>;
+}
+
+export default async function DeactivatedAdminPage({ params }: PageProps) {
+  // Await params even if not used to comply with Next.js 15
+  await params;
+
   return (
     <div className="container mx-auto px-6 py-40 text-center min-h-screen bg-[#050816] text-white">
       <div className="max-w-md mx-auto space-y-8 glass p-12 rounded-[2rem] border-white/5">
