@@ -35,11 +35,10 @@ export function Header() {
           
           <nav className="hidden items-center gap-8 text-sm font-medium lg:flex text-muted-foreground">
             <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+            <Link href="/explore" className="hover:text-primary transition-colors">Explore</Link>
             <Link href="/courses" className="hover:text-primary transition-colors">Learn</Link>
             <Link href="#" className="hover:text-primary transition-colors">Projects</Link>
-            <Link href="#" className="hover:text-primary transition-colors">Resources</Link>
             <Link href="/about" className="hover:text-primary transition-colors">About</Link>
-            <Link href="#" className="hover:text-primary transition-colors">Contact</Link>
           </nav>
         </div>
 
