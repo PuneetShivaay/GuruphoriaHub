@@ -3,7 +3,18 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Github, Youtube, Newspaper, Twitter, Linkedin, Mail, ExternalLink, Globe, ChevronRight, ArrowRight } from 'lucide-react';
+import { 
+  Github, 
+  Youtube, 
+  Newspaper, 
+  Twitter, 
+  Linkedin, 
+  Mail, 
+  ExternalLink, 
+  Globe, 
+  ChevronRight, 
+  ArrowRight 
+} from 'lucide-react';
 import { GuruphoriaLogo } from './logo';
 import { getPlaceholderImage } from '@/lib/placeholder-images';
 
