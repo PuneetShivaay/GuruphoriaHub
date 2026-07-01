@@ -25,6 +25,8 @@ import { notFound } from 'next/navigation';
 export async function generateStaticParams() {
   try {
     const { firestore } = initializeFirebase();
+    if (!firestore) return [];
+    
     const coursesCol = collection(firestore, 'courses');
     const coursesSnapshot = await getDocs(coursesCol);
     return coursesSnapshot.docs.map(doc => ({
@@ -39,6 +41,8 @@ export async function generateStaticParams() {
 async function getCourse(id: string) {
   try {
     const { firestore } = initializeFirebase();
+    if (!firestore) return null;
+    
     const courseRef = doc(firestore, 'courses', id);
     const courseSnap = await getDoc(courseRef);
     if (!courseSnap.exists()) return null;
