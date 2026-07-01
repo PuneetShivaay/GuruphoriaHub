@@ -1,10 +1,13 @@
 'use client';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { getPlaceholderImage } from '@/lib/placeholder-images';
+import { fetchLatestVideos } from '@/lib/youtube';
+import type { YouTubeVideo } from '@/lib/types';
 import { 
   ArrowRight, 
   Youtube, 
@@ -22,11 +25,23 @@ import {
   Cloud,
   Terminal,
   ExternalLink,
-  Github
+  Github,
+  Loader2
 } from 'lucide-react';
 
 export default function Home() {
   const heroImage = getPlaceholderImage('brand-hero');
+  const [videos, setVideos] = useState<YouTubeVideo[]>([]);
+  const [isLoadingVideos, setIsLoadingVideos] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      const latestVideos = await fetchLatestVideos(2);
+      setVideos(latestVideos);
+      setIsLoadingVideos(false);
+    }
+    loadData();
+  }, []);
 
   const technologies = [
     { name: 'Agentic AI', icon: <Brain className="h-6 w-6" />, desc: 'Building autonomous agents that can think and act.' },
@@ -180,31 +195,43 @@ export default function Home() {
                 </Button>
               </div>
               <div className="grid gap-6">
-                {[1, 2].map((i) => (
-                  <Card key={i} className="glass overflow-hidden group bg-[#101828]/50 border-white/5">
-                    <div className="relative aspect-video">
-                      <Image 
-                        src={`https://picsum.photos/seed/vid${i}/600/400`} 
-                        alt="Video Thumbnail" 
-                        fill 
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        data-ai-hint="video thumbnail"
-                      />
-                      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/0 transition-colors"></div>
-                      <div className="absolute bottom-3 right-3 bg-black/80 px-2 py-1 rounded text-[10px] font-bold border border-white/10">14:20</div>
-                    </div>
-                    <div className="p-6 space-y-3">
-                      <h4 className="font-bold text-lg line-clamp-2 group-hover:text-primary transition-colors">Building an Agentic AI Framework with Next.js 15 and OpenAI</h4>
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> 2 days ago</span>
-                        <span>4.2k views</span>
+                {isLoadingVideos ? (
+                  Array.from({ length: 2 }).map((_, i) => (
+                    <Card key={i} className="glass overflow-hidden bg-[#101828]/50 border-white/5 animate-pulse">
+                      <div className="aspect-video bg-white/5" />
+                      <div className="p-6 space-y-3">
+                        <div className="h-6 bg-white/5 rounded w-3/4" />
+                        <div className="h-4 bg-white/5 rounded w-1/2" />
                       </div>
-                      <Button asChild variant="outline" size="sm" className="w-full mt-2 glass border-white/10">
-                        <Link href="https://www.youtube.com/@guruphoria" target="_blank" rel="noopener noreferrer">Watch Now</Link>
-                      </Button>
-                    </div>
-                  </Card>
-                ))}
+                    </Card>
+                  ))
+                ) : (
+                  videos.map((video) => (
+                    <Card key={video.id} className="glass overflow-hidden group bg-[#101828]/50 border-white/5">
+                      <div className="relative aspect-video">
+                        <Image 
+                          src={video.thumbnail} 
+                          alt={video.title} 
+                          fill 
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          data-ai-hint="video thumbnail"
+                        />
+                        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/0 transition-colors"></div>
+                        <div className="absolute bottom-3 right-3 bg-black/80 px-2 py-1 rounded text-[10px] font-bold border border-white/10">{video.duration}</div>
+                      </div>
+                      <div className="p-6 space-y-3">
+                        <h4 className="font-bold text-lg line-clamp-2 group-hover:text-primary transition-colors">{video.title}</h4>
+                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                          <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {video.publishedAt}</span>
+                          <span>{video.viewCount} views</span>
+                        </div>
+                        <Button asChild variant="outline" size="sm" className="w-full mt-2 glass border-white/10">
+                          <Link href={video.videoUrl} target="_blank" rel="noopener noreferrer">Watch Now</Link>
+                        </Button>
+                      </div>
+                    </Card>
+                  ))
+                )}
               </div>
             </div>
 

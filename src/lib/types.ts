@@ -10,3 +10,14 @@ export interface Course {
 }
 
 export type CourseFormData = Omit<Course, 'id'>;
+
+export interface YouTubeVideo {
+  id: string;
+  title: string;
+  description: string;
+  thumbnail: string;
+  duration: string;
+  publishedAt: string;
+  viewCount: string;
+  videoUrl: string;
+}

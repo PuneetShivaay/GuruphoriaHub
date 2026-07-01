@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
+import { fetchLatestVideos } from '@/lib/youtube';
+import type { YouTubeVideo } from '@/lib/types';
 import { 
   Search, 
   Sparkles, 
@@ -26,13 +28,25 @@ import {
   MessageSquare,
   Send,
   Linkedin,
-  Twitter
+  Twitter,
+  Calendar
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function ExplorePage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [videos, setVideos] = useState<YouTubeVideo[]>([]);
+  const [isLoadingVideos, setIsLoadingVideos] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      const latestVideos = await fetchLatestVideos(6);
+      setVideos(latestVideos);
+      setIsLoadingVideos(false);
+    }
+    loadData();
+  }, []);
 
   const categories = [
     { name: 'Artificial Intelligence', icon: '🤖' },
@@ -54,15 +68,6 @@ export default function ExplorePage() {
     { title: 'Next.js 15 & Firebase Auth', type: 'Video', icon: <Youtube className="h-5 w-5" />, date: '4 days ago' },
     { title: 'The Future of LLM Apps', type: 'Article', icon: <Newspaper className="h-5 w-5" />, date: 'Yesterday' },
     { title: 'Agentic Workflow Library', type: 'Open Source', icon: <Github className="h-5 w-5" />, date: '1 week ago' },
-  ];
-
-  const videos = [
-    { title: 'Next.js 15 + Genkit: Agentic AI Tutorial', duration: '18:45', date: 'Oct 24', views: '4.2k', diff: 'Intermediate', tags: ['AI', 'Next.js'] },
-    { title: 'Mastering Firebase Security Rules 2024', duration: '22:10', date: 'Oct 20', views: '3.1k', diff: 'Advanced', tags: ['Firebase', 'Security'] },
-    { title: 'Building a RAG Pipeline from Scratch', duration: '15:30', date: 'Oct 15', views: '5.6k', diff: 'Advanced', tags: ['LLM', 'Python'] },
-    { title: 'React 19 Server Actions Explained', duration: '12:00', date: 'Oct 12', views: '2.8k', diff: 'Beginner', tags: ['React'] },
-    { title: 'Full Stack AI App with Gemini 1.5', duration: '25:15', date: 'Oct 10', views: '7.1k', diff: 'Intermediate', tags: ['AI', 'Gemini'] },
-    { title: 'System Design for Senior Engineers', duration: '30:00', date: 'Oct 05', views: '10k', diff: 'Advanced', tags: ['System Design'] },
   ];
 
   const roadmaps = [
@@ -184,35 +189,53 @@ export default function ExplorePage() {
             </Button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {videos.map((vid, idx) => (
-              <Card key={idx} className="glass overflow-hidden group bg-[#101828]/50 border-white/5">
-                <div className="relative aspect-video">
-                  <Image 
-                    src={`https://picsum.photos/seed/explore-vid-${idx}/600/400`} 
-                    alt="Thumbnail" 
-                    fill 
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    data-ai-hint="video thumbnail"
-                  />
-                  <div className="absolute bottom-3 right-3 bg-black/80 px-2 py-1 rounded text-[10px] font-bold border border-white/10">{vid.duration}</div>
-                  <div className="absolute top-3 left-3 flex gap-2">
-                    <Badge className="bg-primary/20 text-primary border-none text-[10px]">{vid.diff}</Badge>
+            {isLoadingVideos ? (
+              Array.from({ length: 6 }).map((_, i) => (
+                <Card key={i} className="glass overflow-hidden bg-[#101828]/50 border-white/5 animate-pulse">
+                  <div className="aspect-video bg-white/5" />
+                  <div className="p-6 space-y-4">
+                    <div className="h-6 bg-white/5 rounded w-3/4" />
+                    <div className="flex gap-2">
+                      <div className="h-4 bg-white/5 rounded w-16" />
+                      <div className="h-4 bg-white/5 rounded w-16" />
+                    </div>
                   </div>
-                </div>
-                <div className="p-6 space-y-4">
-                  <h4 className="font-bold text-lg group-hover:text-primary transition-colors line-clamp-2">{vid.title}</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {vid.tags.map(t => <Badge key={t} variant="outline" className="text-[10px] border-white/10 text-muted-foreground">{t}</Badge>)}
+                </Card>
+              ))
+            ) : (
+              videos.map((vid) => (
+                <Card key={vid.id} className="glass overflow-hidden group bg-[#101828]/50 border-white/5">
+                  <div className="relative aspect-video">
+                    <Image 
+                      src={vid.thumbnail} 
+                      alt={vid.title} 
+                      fill 
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      data-ai-hint="video thumbnail"
+                    />
+                    <div className="absolute bottom-3 right-3 bg-black/80 px-2 py-1 rounded text-[10px] font-bold border border-white/10">{vid.duration}</div>
+                    <div className="absolute top-3 left-3 flex gap-2">
+                      <Badge className="bg-primary/20 text-primary border-none text-[10px]">Intermediate</Badge>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-2">
-                    <span>{vid.date} • {vid.views} views</span>
-                    <Button variant="outline" size="sm" className="h-8 glass border-white/10">
-                      <PlayCircle className="mr-2 h-3 w-3" /> Watch
-                    </Button>
+                  <div className="p-6 space-y-4">
+                    <h4 className="font-bold text-lg group-hover:text-primary transition-colors line-clamp-2">{vid.title}</h4>
+                    <div className="flex flex-wrap gap-2">
+                      <Badge variant="outline" className="text-[10px] border-white/10 text-muted-foreground">AI</Badge>
+                      <Badge variant="outline" className="text-[10px] border-white/10 text-muted-foreground">Next.js</Badge>
+                    </div>
+                    <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-2">
+                      <span>{vid.publishedAt} • {vid.viewCount} views</span>
+                      <Button asChild variant="outline" size="sm" className="h-8 glass border-white/10">
+                        <Link href={vid.videoUrl} target="_blank" rel="noopener noreferrer">
+                          <PlayCircle className="mr-2 h-3 w-3" /> Watch
+                        </Link>
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              ))
+            )}
           </div>
         </div>
       </section>
