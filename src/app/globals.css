@@ -53,7 +53,12 @@
 }
 
 .neon-glow {
+  @apply transition-all duration-300;
   box-shadow: 0 0 20px rgba(14, 165, 255, 0.2);
+}
+
+.neon-glow:hover {
+  box-shadow: 0 0 35px rgba(14, 165, 255, 0.4);
 }
 
 .text-gradient {
@@ -72,6 +77,10 @@
 
 .perspective-1000 {
   perspective: 1000px;
+}
+
+.reveal-section {
+  @apply animate-in fade-in slide-in-from-bottom-8 duration-1000 ease-out fill-mode-both;
 }
 
 /* Custom Scrollbar */

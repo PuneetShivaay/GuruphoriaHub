@@ -1,4 +1,3 @@
-
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -84,43 +83,43 @@ export default function Home() {
   return (
     <div className="flex flex-col overflow-hidden bg-[#050816]">
       {/* Hero Section */}
-      <section className="relative w-full pt-20 pb-16 lg:pt-36 lg:pb-32 overflow-hidden">
+      <section className="relative w-full pt-20 pb-16 lg:pt-36 lg:pb-32 overflow-hidden reveal-section">
         {/* Premium Gradient Background */}
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_30%,_rgba(14,165,255,0.15),transparent_50%),radial-gradient(circle_at_80%_70%,_rgba(14,165,255,0.1),transparent_50%)] pointer-events-none" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_rgba(14,165,255,0.1)_0%,_transparent_70%)] from-primary/10 to-transparent pointer-events-none" />
         
         <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10">
           <div className="space-y-10 lg:space-y-12 text-center lg:text-left">
-            <Badge variant="outline" className="border-primary/30 text-primary py-1.5 px-6 text-xs sm:text-sm glass uppercase tracking-[0.2em] font-bold">
+            <Badge variant="outline" className="border-primary/30 text-primary py-1.5 px-6 text-xs sm:text-sm glass uppercase tracking-[0.2em] font-bold animate-in fade-in slide-in-from-left-4 duration-700">
               ✨ Redefining Tech Education
             </Badge>
-            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-headline font-extrabold leading-[1.1] sm:leading-[1.05]">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-headline font-extrabold leading-[1.1] sm:leading-[1.05] animate-in fade-in slide-in-from-left-8 duration-700 delay-100">
               Master AI.<br />
               Build Software.
             </h1>
-            <p className="max-w-xl text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed mx-auto lg:mx-0 font-medium">
+            <p className="max-w-xl text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed mx-auto lg:mx-0 font-medium animate-in fade-in slide-in-from-left-10 duration-700 delay-200">
               Guruphoria is a premier educational laboratory dedicated to building the architects of tomorrow. We empower students and developers to master the complete technological stack—from Artificial Intelligence and Software Engineering to Automation, Cloud, and Web Development—through rigorous, practical learning that translates directly to real-world impact.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 sm:gap-6 pt-4 sm:pt-6">
-              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 sm:px-10 text-base sm:text-lg font-bold transition-all hover:scale-105 neon-glow w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 sm:gap-6 pt-4 sm:pt-6 animate-in fade-in slide-in-from-left-12 duration-700 delay-300">
+              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 sm:px-10 text-base sm:text-lg font-bold transition-all hover:scale-105 active:scale-95 neon-glow w-full sm:w-auto">
                 <Link href="/courses">
                   Start Learning
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="rounded-full px-8 sm:px-10 text-base sm:text-lg font-bold glass hover:bg-white/5 border-white/10 transition-all w-full sm:w-auto">
+              <Button asChild size="lg" variant="outline" className="rounded-full px-8 sm:px-10 text-base sm:text-lg font-bold glass hover:bg-white/5 border-white/10 transition-all hover:scale-105 active:scale-95 w-full sm:w-auto">
                 <Link href="/explore">
-                  Explore Learning Paths <ArrowRight className="ml-2 h-5 w-5" />
+                  Explore Learning Paths <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
             </div>
           </div>
           
-          <div className="relative group perspective-1000 hidden lg:block">
+          <div className="relative group perspective-1000 hidden lg:block animate-in fade-in zoom-in-95 duration-1000 delay-400">
             {/* Subtle Animated Glow behind image */}
             <div className="absolute -inset-8 bg-primary/20 rounded-full blur-[140px] animate-pulse group-hover:bg-primary/30 transition duration-1000"></div>
             
             {/* Image container with soft floating animation */}
-            <div className="relative glass rounded-[2rem] p-4 overflow-hidden animate-float border-white/10 shadow-2xl transition-all duration-700 hover:rotate-1">
+            <div className="relative glass rounded-[2rem] p-4 overflow-hidden animate-float border-white/10 shadow-2xl transition-all duration-700 hover:rotate-1 hover:shadow-primary/20">
               {creatorImage && (
                 <Image
                   src={creatorImage.imageUrl}
@@ -128,11 +127,11 @@ export default function Home() {
                   width={800}
                   height={800}
                   priority
-                  className="rounded-[1.5rem] w-full object-cover aspect-square grayscale-[20%] group-hover:grayscale-0 transition duration-700"
+                  className="rounded-[1.5rem] w-full object-cover aspect-square grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition duration-700"
                   data-ai-hint="professional developer"
                 />
               )}
-              <div className="absolute bottom-8 left-8 right-8 glass-dark p-6 rounded-2xl border-white/10 backdrop-blur-md">
+              <div className="absolute bottom-8 left-8 right-8 glass-dark p-6 rounded-2xl border-white/10 backdrop-blur-md transition-transform duration-500 group-hover:-translate-y-2">
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">
                     <p className="text-xs text-primary font-bold uppercase tracking-widest">Active Session</p>
@@ -149,7 +148,7 @@ export default function Home() {
       </section>
 
       {/* Why Learn with Guruphoria? Section */}
-      <section className="py-20 sm:py-32 bg-[#050816] relative overflow-hidden">
+      <section className="py-20 sm:py-32 bg-[#050816] relative overflow-hidden reveal-section">
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center mb-16 sm:mb-24 space-y-4">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold">Why Learn with <span className="text-primary">Guruphoria?</span></h2>
@@ -173,11 +172,11 @@ export default function Home() {
                 icon: <Sparkles className="h-7 w-7" />
               }
             ].map((item, idx) => (
-              <Card key={idx} className="glass p-8 sm:p-10 group hover:border-primary/50 transition-all duration-500 bg-[#101828]/50 border-white/5 hover:-translate-y-2 rounded-[2rem]">
-                <div className="bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center text-primary mb-8 group-hover:scale-110 transition-transform duration-500">
+              <Card key={idx} className="glass p-8 sm:p-10 group hover:border-primary/50 transition-all duration-500 bg-[#101828]/50 border-white/5 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(14,165,255,0.1)] rounded-[2rem]">
+                <div className="bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center text-primary mb-8 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
                   {item.icon}
                 </div>
-                <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
+                <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors">{item.title}</h3>
                 <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">{item.desc}</p>
               </Card>
             ))}
@@ -186,7 +185,7 @@ export default function Home() {
       </section>
 
       {/* Featured Topics Grid */}
-      <section className="py-16 sm:py-24 bg-[#050816]">
+      <section className="py-16 sm:py-24 bg-[#050816] reveal-section">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12 sm:mb-16 space-y-4">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold">Explore <span className="text-primary">Featured Topics</span></h2>
@@ -194,11 +193,11 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
             {featuredTopics.map((topic) => (
-              <Card key={topic.name} className="glass p-6 sm:p-8 text-center group hover:border-primary/50 transition-all duration-500 bg-[#101828]/50 border-white/5 flex flex-col items-center justify-center gap-3 sm:gap-4 cursor-pointer hover:-translate-y-2">
+              <Card key={topic.name} className="glass p-6 sm:p-8 text-center group hover:border-primary/50 transition-all duration-500 bg-[#101828]/50 border-white/5 flex flex-col items-center justify-center gap-3 sm:gap-4 cursor-pointer hover:-translate-y-2 hover:shadow-primary/10">
                 <div className={`${topic.color} group-hover:scale-125 transition-transform duration-500`}>
                   {topic.icon && <span className="[&>svg]:w-8 sm:[&>svg]:w-10 [&>svg]:h-8 sm:[&>svg]:h-10">{topic.icon}</span>}
                 </div>
-                <h3 className="font-bold text-xs sm:text-sm tracking-tight">{topic.name}</h3>
+                <h3 className="font-bold text-xs sm:text-sm tracking-tight group-hover:text-primary transition-colors">{topic.name}</h3>
               </Card>
             ))}
           </div>
@@ -206,20 +205,20 @@ export default function Home() {
       </section>
 
       {/* Our Story Section */}
-      <section className="py-20 sm:py-32 bg-[#101828]/20 relative overflow-hidden">
+      <section className="py-20 sm:py-32 bg-[#101828]/20 relative overflow-hidden reveal-section">
         <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-64 bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="container mx-auto px-6">
           <div className="glass rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-8 lg:p-16 border-white/5 bg-gradient-to-br from-[#101828]/60 to-transparent">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               <div className="relative group max-w-md mx-auto lg:max-w-none w-full">
-                <div className="relative glass rounded-3xl p-3 overflow-hidden border-white/10 shadow-2xl transition-transform group-hover:scale-[1.02] duration-500">
+                <div className="relative glass rounded-3xl p-3 overflow-hidden border-white/10 shadow-2xl transition-transform group-hover:scale-[1.02] hover:shadow-primary/20 duration-500">
                   {creatorImage && (
                     <Image
                       src={creatorImage.imageUrl}
                       alt="Puneet Shivaay"
                       width={600}
                       height={600}
-                      className="rounded-2xl w-full object-cover aspect-square grayscale-[10%] group-hover:grayscale-0 transition duration-700"
+                      className="rounded-2xl w-full object-cover aspect-square grayscale-[10%] group-hover:grayscale-0 group-hover:scale-105 transition duration-700"
                       data-ai-hint="professional developer"
                     />
                   )}
@@ -229,7 +228,7 @@ export default function Home() {
                       <p className="text-lg sm:text-xl font-bold text-white">Puneet Shivaay</p>
                       <p className="text-xs sm:text-sm text-primary font-bold">SDE & AI Educator</p>
                     </div>
-                    <Link href="https://github.com/PuneetShivaay" target="_blank" className="bg-white/10 hover:bg-white/20 p-2 rounded-lg backdrop-blur-md transition-colors border border-white/10">
+                    <Link href="https://github.com/PuneetShivaay" target="_blank" className="bg-white/10 hover:bg-white/20 p-2 rounded-lg backdrop-blur-md transition-all hover:scale-110 border border-white/10">
                       <Github className="h-5 w-5 text-white" />
                     </Link>
                   </div>
@@ -252,20 +251,20 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-8 justify-center lg:justify-start">
-                  <div className="space-y-1">
-                    <p className="text-3xl sm:text-4xl font-extrabold text-white tracking-tighter">10k+</p>
+                  <div className="space-y-1 group">
+                    <p className="text-3xl sm:text-4xl font-extrabold text-white tracking-tighter transition-transform group-hover:scale-110 origin-left">10k+</p>
                     <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-widest font-black">Subscribers</p>
                   </div>
-                  <div className="space-y-1">
-                    <p className="text-3xl sm:text-4xl font-extrabold text-white tracking-tighter">50+</p>
+                  <div className="space-y-1 group">
+                    <p className="text-3xl sm:text-4xl font-extrabold text-white tracking-tighter transition-transform group-hover:scale-110 origin-left">50+</p>
                     <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-widest font-black">Deep Dive Labs</p>
                   </div>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                  <Button asChild size="lg" className="rounded-full bg-primary font-bold transition-all hover:scale-105 w-full sm:w-auto px-10">
+                  <Button asChild size="lg" className="rounded-full bg-primary font-bold transition-all hover:scale-105 active:scale-95 w-full sm:w-auto px-10">
                     <Link href="/about">Read Full Story</Link>
                   </Button>
-                  <Button asChild size="lg" variant="ghost" className="rounded-full text-white hover:text-primary transition-colors font-bold w-full sm:w-auto">
+                  <Button asChild size="lg" variant="ghost" className="rounded-full text-white hover:text-primary transition-all hover:translate-x-1 font-bold w-full sm:w-auto">
                     <Link href="/contact" className="flex items-center justify-center lg:justify-start gap-2">
                       Get in Touch <ChevronRight className="h-4 w-4" />
                     </Link>
@@ -278,16 +277,16 @@ export default function Home() {
       </section>
 
       {/* Featured Content Sections (Latest Videos & Articles) */}
-      <section className="w-full py-16 sm:py-24 bg-[#050816]">
+      <section className="w-full py-16 sm:py-24 bg-[#050816] reveal-section">
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
             {/* YouTube Section */}
             <div className="space-y-8">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl sm:text-3xl font-bold flex items-center gap-3">
-                  <Youtube className="text-[#EA3323] h-6 w-6 sm:h-8 sm:w-8" /> Latest Labs
+                  <Youtube className="text-[#EA3323] h-6 w-6 sm:h-8 sm:w-8 animate-pulse" /> Latest Labs
                 </h2>
-                <Button asChild variant="ghost" className="text-xs sm:text-sm font-bold text-muted-foreground hover:text-primary transition-colors">
+                <Button asChild variant="ghost" className="text-xs sm:text-sm font-bold text-muted-foreground hover:text-primary transition-all hover:scale-105">
                   <Link href="https://www.youtube.com/@guruphoria" target="_blank">View Channel</Link>
                 </Button>
               </div>
@@ -304,17 +303,17 @@ export default function Home() {
                   ))
                 ) : (
                   videos.map((video) => (
-                    <Card key={video.id} className="glass overflow-hidden group bg-[#101828]/50 border-white/5 hover:border-primary/30 transition-all duration-500">
-                      <div className="relative aspect-video">
+                    <Card key={video.id} className="glass overflow-hidden group bg-[#101828]/50 border-white/5 hover:border-primary/30 hover:-translate-y-1 hover:shadow-primary/10 transition-all duration-500">
+                      <div className="relative aspect-video overflow-hidden">
                         <Image 
                           src={video.thumbnail} 
                           alt={video.title} 
                           fill 
-                          className="object-cover group-hover:scale-105 transition-transform duration-700"
+                          className="object-cover group-hover:scale-110 transition-transform duration-700"
                           data-ai-hint="programming code"
                         />
                         <div className="absolute inset-0 bg-black/40 group-hover:bg-black/0 transition-colors"></div>
-                        <div className="absolute bottom-4 right-4 bg-black/80 px-2 py-1 rounded text-[10px] font-bold border border-white/10">{video.duration}</div>
+                        <div className="absolute bottom-4 right-4 bg-black/80 px-2 py-1 rounded text-[10px] font-bold border border-white/10 group-hover:bg-primary group-hover:text-white transition-colors">{video.duration}</div>
                       </div>
                       <div className="p-4 sm:p-6 space-y-3">
                         <h4 className="font-bold text-base sm:text-lg line-clamp-2 group-hover:text-primary transition-colors leading-snug">{video.title}</h4>
@@ -322,7 +321,7 @@ export default function Home() {
                           <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> {video.publishedAt}</span>
                           <span>{video.viewCount} views</span>
                         </div>
-                        <Button asChild variant="outline" size="sm" className="w-full mt-2 glass border-white/10 hover:bg-white/5 font-bold rounded-full">
+                        <Button asChild variant="outline" size="sm" className="w-full mt-2 glass border-white/10 hover:bg-white/5 hover:border-primary/50 font-bold rounded-full transition-all hover:scale-[1.02]">
                           <Link href={video.videoUrl} target="_blank">Watch Now</Link>
                         </Button>
                       </div>
@@ -336,9 +335,9 @@ export default function Home() {
             <div className="space-y-8">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl sm:text-3xl font-bold flex items-center gap-3">
-                  <BookOpen className="text-primary h-6 w-6 sm:h-8 sm:w-8" /> Engineering Blog
+                  <BookOpen className="text-primary h-6 w-6 sm:h-8 sm:w-8 animate-bounce duration-[2000ms]" /> Engineering Blog
                 </h2>
-                <Button asChild variant="ghost" className="text-xs sm:text-sm font-bold text-muted-foreground hover:text-primary transition-colors">
+                <Button asChild variant="ghost" className="text-xs sm:text-sm font-bold text-muted-foreground hover:text-primary transition-all hover:scale-105">
                   <Link href="https://puneetshivaay.medium.com/" target="_blank">Read All Stories</Link>
                 </Button>
               </div>
@@ -356,7 +355,7 @@ export default function Home() {
                   ))
                 ) : (
                   articles.map((article) => (
-                    <Card key={article.id} className="glass p-4 sm:p-6 flex flex-col sm:flex-row gap-4 sm:gap-6 group bg-[#101828]/50 border-white/5 hover:border-primary/30 transition-all duration-500">
+                    <Card key={article.id} className="glass p-4 sm:p-6 flex flex-col sm:flex-row gap-4 sm:gap-6 group bg-[#101828]/50 border-white/5 hover:border-primary/30 hover:-translate-y-1 hover:shadow-primary/10 transition-all duration-500">
                       <div className="relative w-full sm:w-32 h-40 sm:h-32 rounded-xl overflow-hidden shrink-0 border border-white/5">
                         <Image 
                           src={article.coverImage} 
@@ -367,7 +366,7 @@ export default function Home() {
                         />
                       </div>
                       <div className="space-y-3 flex-grow flex flex-col">
-                        <Badge variant="secondary" className="bg-primary/10 text-primary border-none text-[10px] uppercase font-bold w-fit px-3">
+                        <Badge variant="secondary" className="bg-primary/10 text-primary border-none text-[10px] uppercase font-bold w-fit px-3 transition-colors group-hover:bg-primary group-hover:text-white">
                           {article.category}
                         </Badge>
                         <h4 className="font-bold text-lg sm:text-xl group-hover:text-primary transition-colors leading-tight line-clamp-2">
@@ -379,7 +378,7 @@ export default function Home() {
                             <span>{article.publishedAt}</span>
                           </div>
                           <Button asChild variant="link" className="p-0 h-auto text-primary font-bold hover:no-underline text-xs">
-                            <Link href={article.url} target="_blank" className="flex items-center gap-1 group/btn">
+                            <Link href={article.url} target="_blank" className="flex items-center gap-1 group/btn transition-all">
                               Read Article <ChevronRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
                             </Link>
                           </Button>
@@ -395,7 +394,7 @@ export default function Home() {
       </section>
 
       {/* GitHub Projects Section */}
-      <section className="w-full py-16 sm:py-24 bg-[#101828]/30">
+      <section className="w-full py-16 sm:py-24 bg-[#101828]/30 reveal-section">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12 sm:mb-16 space-y-4">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold">Open Source <span className="text-primary">Labs</span></h2>
@@ -416,28 +415,28 @@ export default function Home() {
               ))
             ) : (
               repos.map((repo) => (
-                <Card key={repo.name} className="glass p-6 sm:p-8 group hover:border-primary/50 transition-all duration-500 bg-[#101828]/50 border-white/5 hover:-translate-y-2">
-                  <div className="bg-primary/10 w-12 h-12 rounded-xl flex items-center justify-center text-primary mb-6 transition-transform group-hover:rotate-6">
+                <Card key={repo.name} className="glass p-6 sm:p-8 group hover:border-primary/50 transition-all duration-500 bg-[#101828]/50 border-white/5 hover:-translate-y-2 hover:shadow-primary/10">
+                  <div className="bg-primary/10 w-12 h-12 rounded-xl flex items-center justify-center text-primary mb-6 transition-transform group-hover:rotate-6 group-hover:scale-110">
                     <Code2 className="h-6 w-6" />
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-bold mb-4 line-clamp-1">{repo.name}</h3>
+                  <h3 className="text-xl sm:text-2xl font-bold mb-4 line-clamp-1 group-hover:text-primary transition-colors">{repo.name}</h3>
                   <p className="text-muted-foreground text-xs sm:text-sm mb-6 line-clamp-2 leading-relaxed">{repo.description}</p>
                   <div className="flex flex-wrap gap-3 sm:gap-4 mb-8">
-                    <Badge variant="outline" className="text-[10px] border-white/10 text-muted-foreground font-bold px-3">{repo.language}</Badge>
-                    <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-muted-foreground font-medium">
+                    <Badge variant="outline" className="text-[10px] border-white/10 text-muted-foreground font-bold px-3 transition-colors group-hover:border-primary/30 group-hover:text-white">{repo.language}</Badge>
+                    <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-muted-foreground font-medium group-hover:text-white transition-colors">
                       <Star className="h-3.5 w-3.5 text-yellow-500 fill-yellow-500" /> {repo.stars}
                     </div>
-                    <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-muted-foreground font-medium">
+                    <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-muted-foreground font-medium group-hover:text-white transition-colors">
                       <GitFork className="h-3.5 w-3.5" /> {repo.forks}
                     </div>
                   </div>
                   <div className="flex gap-3 sm:gap-4">
-                    <Button asChild variant="outline" size="sm" className="flex-1 glass border-white/10 hover:bg-white/5 font-bold rounded-full text-xs">
+                    <Button asChild variant="outline" size="sm" className="flex-1 glass border-white/10 hover:bg-white/5 hover:border-primary/50 font-bold rounded-full text-xs transition-all hover:scale-[1.05]">
                       <Link href={repo.url} target="_blank">
                         <Github className="mr-2 h-4 w-4" /> Code
                       </Link>
                     </Button>
-                    <Button size="sm" className="flex-1 bg-primary/10 text-primary hover:bg-primary/20 border border-primary/20 font-bold rounded-full text-xs">
+                    <Button size="sm" className="flex-1 bg-primary/10 text-primary hover:bg-primary/20 border border-primary/20 font-bold rounded-full text-xs transition-all hover:scale-[1.05]">
                       <ExternalLink className="mr-2 h-4 w-4" /> Demo
                     </Button>
                   </div>
@@ -449,17 +448,17 @@ export default function Home() {
       </section>
 
       {/* Premium Newsletter CTA */}
-      <section className="w-full py-16 sm:py-24 pb-24 sm:pb-32">
+      <section className="w-full py-16 sm:py-24 pb-24 sm:pb-32 reveal-section">
         <div className="container mx-auto px-6">
-          <Card className="glass p-8 sm:p-12 lg:p-24 relative overflow-hidden text-center max-w-5xl mx-auto rounded-[2.5rem] sm:rounded-[4rem] bg-gradient-to-br from-[#101828]/80 to-transparent border-white/10 shadow-[0_0_80px_rgba(14,165,255,0.1)]">
-            <div className="absolute -top-32 -left-32 w-80 h-80 bg-primary/20 rounded-full blur-[140px]"></div>
-            <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-primary/10 rounded-full blur-[140px]"></div>
+          <Card className="glass p-8 sm:p-12 lg:p-24 relative overflow-hidden text-center max-w-5xl mx-auto rounded-[2.5rem] sm:rounded-[4rem] bg-gradient-to-br from-[#101828]/80 to-transparent border-white/10 shadow-[0_0_80px_rgba(14,165,255,0.1)] transition-shadow duration-700 hover:shadow-primary/20 group">
+            <div className="absolute -top-32 -left-32 w-80 h-80 bg-primary/20 rounded-full blur-[140px] group-hover:bg-primary/30 transition-colors"></div>
+            <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-primary/10 rounded-full blur-[140px] group-hover:bg-primary/20 transition-colors"></div>
             
             <div className="relative z-10 space-y-8 sm:space-y-10 max-w-3xl mx-auto">
               <div className="inline-flex p-4 sm:p-5 rounded-3xl bg-primary/10 text-primary mb-2 animate-bounce">
                 <Sparkles className="h-8 w-8 sm:h-10 sm:w-10" />
               </div>
-              <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-[1.1] tracking-tight">Stay Ahead in the <br /><span className="text-primary">AI Revolution</span></h2>
+              <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-[1.1] tracking-tight group-hover:text-white transition-colors">Stay Ahead in the <br /><span className="text-primary">AI Revolution</span></h2>
               <p className="text-muted-foreground text-base sm:text-lg md:text-xl font-medium leading-relaxed">
                 Join 10,000+ engineers receiving curated insights on Agentic AI, system design, and the evolving technical landscape.
               </p>
@@ -468,14 +467,14 @@ export default function Home() {
                 <input 
                   type="email" 
                   placeholder="name@email.com" 
-                  className="flex-grow bg-white/5 border border-white/10 rounded-full px-6 sm:px-8 py-4 sm:py-5 outline-none focus:border-primary/50 transition-colors text-white text-base sm:text-lg font-medium backdrop-blur-md"
+                  className="flex-grow bg-white/5 border border-white/10 rounded-full px-6 sm:px-8 py-4 sm:py-5 outline-none focus:border-primary transition-all text-white text-base sm:text-lg font-medium backdrop-blur-md hover:bg-white/10"
                   required
                 />
-                <Button className="bg-primary hover:bg-primary/90 rounded-full px-8 sm:px-12 py-4 sm:py-5 h-auto text-base sm:text-lg font-bold transition-all hover:scale-105 neon-glow">
+                <Button className="bg-primary hover:bg-primary/90 rounded-full px-8 sm:px-12 py-4 sm:py-5 h-auto text-base sm:text-lg font-bold transition-all hover:scale-105 active:scale-95 neon-glow">
                   Join Now
                 </Button>
               </div>
-              <p className="text-[10px] text-muted-foreground/60 font-bold uppercase tracking-widest">Weekly technical deep dives • No spam • Ever</p>
+              <p className="text-[10px] text-muted-foreground/60 font-bold uppercase tracking-widest transition-opacity group-hover:opacity-100">Weekly technical deep dives • No spam • Ever</p>
             </div>
           </Card>
         </div>
