@@ -86,10 +86,10 @@ export default function Home() {
       <section className="relative w-full pt-20 pb-16 lg:pt-36 lg:pb-32 overflow-hidden">
         {/* Premium Gradient Background */}
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_30%,_rgba(14,165,255,0.15),transparent_50%),radial-gradient(circle_at_80%_70%,_rgba(14,165,255,0.1),transparent_50%)] pointer-events-none" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-from)_0%,_transparent_70%)] from-primary/10 to-transparent pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_rgba(14,165,255,0.1)_0%,_transparent_70%)] from-primary/10 to-transparent pointer-events-none" />
         
         <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10">
-          <div className="space-y-8 lg:space-y-10 text-center lg:text-left">
+          <div className="space-y-10 lg:space-y-12 text-center lg:text-left">
             <Badge variant="outline" className="border-primary/30 text-primary py-1.5 px-6 text-xs sm:text-sm glass uppercase tracking-[0.2em] font-bold">
               ✨ Redefining Tech Education
             </Badge>
@@ -97,10 +97,10 @@ export default function Home() {
               Master AI.<br />
               Build Software.
             </h1>
-            <p className="max-w-xl text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed mx-auto lg:mx-0">
+            <p className="max-w-xl text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed mx-auto lg:mx-0 font-medium">
               Guruphoria is a premier educational laboratory dedicated to building the architects of tomorrow. We empower students and developers to master the complete technological stack—from Artificial Intelligence and Software Engineering to Automation, Cloud, and Web Development—through rigorous, practical learning that translates directly to real-world impact.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pt-4 sm:pt-6">
+            <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 sm:gap-6 pt-4 sm:pt-6">
               <Button asChild size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-8 sm:px-10 text-base sm:text-lg font-bold transition-all hover:scale-105 neon-glow w-full sm:w-auto">
                 <Link href="/courses">
                   Start Learning
@@ -120,10 +120,10 @@ export default function Home() {
             
             {/* Image container with soft floating animation */}
             <div className="relative glass rounded-[2rem] p-4 overflow-hidden animate-float border-white/10 shadow-2xl transition-all duration-700 hover:rotate-1">
-              {heroImage && (
+              {creatorImage && (
                 <Image
-                  src={heroImage.imageUrl}
-                  alt={heroImage.description}
+                  src={creatorImage.imageUrl}
+                  alt={creatorImage.description}
                   width={800}
                   height={800}
                   priority
@@ -203,12 +203,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Meet the Founder Section */}
+      {/* Our Story Section */}
       <section className="py-20 sm:py-32 bg-[#101828]/20 relative overflow-hidden">
         <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-64 bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="container mx-auto px-6">
           <div className="glass rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-8 lg:p-16 border-white/5 bg-gradient-to-br from-[#101828]/60 to-transparent">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               <div className="relative group max-w-md mx-auto lg:max-w-none w-full">
                 <div className="relative glass rounded-3xl p-3 overflow-hidden border-white/10 shadow-2xl transition-transform group-hover:scale-[1.02] duration-500">
                   {creatorImage && (
@@ -232,27 +232,35 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className="space-y-6 lg:space-y-8 text-center lg:text-left">
-                <div className="space-y-4">
-                  <Badge className="bg-primary/10 text-primary border-none text-[10px] uppercase tracking-widest px-4 py-1">Meet the Founder</Badge>
-                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">Bridging the Gap Between <span className="text-primary">Theory & Production</span></h2>
-                  <p className="text-muted-foreground text-base sm:text-lg leading-relaxed">
-                    As a Software Development Engineer, I spent years building scalable enterprise systems. I founded Guruphoria to provide the elite engineering education I wish I had—focused on real-world implementation, Agentic AI, and system architecture.
-                  </p>
+              <div className="space-y-8 lg:space-y-10 text-center lg:text-left">
+                <div className="space-y-6">
+                  <Badge variant="outline" className="border-primary/30 text-primary py-1 px-4 text-[10px] uppercase tracking-[0.2em] font-bold">Our Story</Badge>
+                  <h2 className="text-4xl sm:text-5xl md:text-6xl font-headline font-bold leading-tight tracking-tight">Our <span className="text-primary">Story</span></h2>
+                  <div className="space-y-4 text-muted-foreground text-base sm:text-lg leading-relaxed font-medium">
+                    <p>
+                      Guruphoria began in 2020 as a computer education institute with the mission of making technology education accessible.
+                    </p>
+                    <p>
+                      When the pandemic changed the way people learned, Guruphoria evolved from offline classrooms into an online learning platform.
+                    </p>
+                    <p>
+                      Today the mission continues through AI education, Software Engineering, Automation, Cloud Computing and modern web technologies.
+                    </p>
+                  </div>
                 </div>
                 <div className="grid grid-cols-2 gap-8 justify-center lg:justify-start">
                   <div className="space-y-1">
-                    <p className="text-2xl sm:text-3xl font-bold text-white">10k+</p>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-widest font-bold">Subscribers</p>
+                    <p className="text-3xl sm:text-4xl font-extrabold text-white tracking-tighter">10k+</p>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-widest font-black">Subscribers</p>
                   </div>
                   <div className="space-y-1">
-                    <p className="text-2xl sm:text-3xl font-bold text-white">50+</p>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-widest font-bold">Deep Dive Labs</p>
+                    <p className="text-3xl sm:text-4xl font-extrabold text-white tracking-tighter">50+</p>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-widest font-black">Deep Dive Labs</p>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Button asChild size="lg" className="rounded-full bg-primary font-bold transition-all hover:scale-105 w-full sm:w-auto">
-                    <Link href="/about">Read My Story</Link>
+                <div className="flex flex-col sm:flex-row gap-4 pt-6">
+                  <Button asChild size="lg" className="rounded-full bg-primary font-bold transition-all hover:scale-105 w-full sm:w-auto px-10">
+                    <Link href="/about">Read Full Story</Link>
                   </Button>
                   <Button asChild size="lg" variant="ghost" className="rounded-full text-white hover:text-primary transition-colors font-bold w-full sm:w-auto">
                     <Link href="/contact" className="flex items-center justify-center lg:justify-start gap-2">
