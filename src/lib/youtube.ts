@@ -1,3 +1,4 @@
+
 import { YouTubeVideo } from './types';
 
 const YOUTUBE_API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
@@ -16,7 +17,7 @@ export async function fetchLatestVideos(limit = 6): Promise<YouTubeVideo[]> {
         ? "Building an Agentic AI Framework with Next.js 15 and OpenAI" 
         : "Mastering Firebase Security Rules for Production Apps",
       description: "A deep dive into the latest technologies shaping the future of software engineering.",
-      thumbnail: `https://picsum.photos/seed/guru-vid-${i}/600/400`,
+      thumbnail: `https://picsum.photos/seed/tech-vid-${i}/600/400`,
       duration: "14:20",
       publishedAt: "2 days ago",
       viewCount: "4.2k",

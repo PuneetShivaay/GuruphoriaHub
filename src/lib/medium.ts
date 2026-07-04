@@ -1,3 +1,4 @@
+
 import { MediumArticle } from './types';
 
 const MEDIUM_FEED_URL = 'https://medium.com/feed/@puneetshivaay';
@@ -27,7 +28,7 @@ export async function fetchLatestArticles(limit = 4): Promise<MediumArticle[]> {
         id: item.guid || item.link,
         title: item.title,
         summary: cleanSummary,
-        coverImage: item.thumbnail || `https://picsum.photos/seed/${item.guid.split('/').pop() || 'medium'}/600/400`,
+        coverImage: item.thumbnail || `https://picsum.photos/seed/tech-art-${item.guid.split('/').pop() || 'medium'}/600/400`,
         readingTime: '8 min',
         publishedAt: new Date(item.pubDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
         url: item.link,
@@ -44,7 +45,7 @@ export async function fetchLatestArticles(limit = 4): Promise<MediumArticle[]> {
         ? "The Rise of Agentic AI Workflows: Why LLMs are Becoming Autonomous" 
         : "Building Scalable Real-time Apps with Next.js 15 and Firebase",
       summary: "Exploring the fundamental shifts in how we build and deploy modern software in the age of generative intelligence and autonomous agents.",
-      coverImage: `https://picsum.photos/seed/guru-art-${i}/600/400`,
+      coverImage: `https://picsum.photos/seed/tech-blog-${i}/600/400`,
       readingTime: `${5 + i} min`,
       publishedAt: i === 0 ? "Oct 24" : "Oct 12",
       url: "https://puneetshivaay.medium.com/",

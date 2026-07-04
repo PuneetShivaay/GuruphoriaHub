@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -85,26 +86,6 @@ export default function ExplorePage() {
     { title: 'LLM Engineering', time: '6 Weeks', diff: 'Advanced', lessons: 24, progress: 0 },
     { title: 'Automation with AI', time: '5 Weeks', diff: 'Intermediate', lessons: 20, progress: 0 },
     { title: 'Full Stack Development', time: '16 Weeks', diff: 'Advanced', lessons: 60, progress: 0 },
-  ];
-
-  const projects = [
-    { title: 'AI Resume Analyzer', desc: 'ATS-friendly resume parser and optimizer.', tech: ['Python', 'Gemini'], diff: 'Hard' },
-    { title: 'AI Chatbot Framework', desc: 'Customizable LLM chatbot with memory.', tech: ['Next.js', 'OpenAI'], diff: 'Medium' },
-    { title: 'MCP Server Demo', desc: 'Model Context Protocol implementation.', tech: ['Node.js', 'Anthropic'], diff: 'Hard' },
-    { title: 'Firebase SaaS Starter', desc: 'The ultimate boilerplate for Firebase.', tech: ['React', 'Firebase'], diff: 'Medium' },
-    { title: 'React Admin Dashboard', desc: 'Modern dashboard for data visualization.', tech: ['React', 'Tailwind'], diff: 'Easy' },
-    { title: 'Chrome AI Extension', desc: 'Summarize web pages using Local LLM.', tech: ['JS', 'WebGPU'], diff: 'Medium' },
-  ];
-
-  const technologies = [
-    { name: 'React', desc: 'UI Library' }, { name: 'Next.js', desc: 'Framework' },
-    { name: 'Firebase', desc: 'BaaS' }, { name: 'TypeScript', desc: 'Language' },
-    { name: 'Node.js', desc: 'Runtime' }, { name: 'Python', desc: 'AI/Data' },
-    { name: 'Docker', desc: 'Containers' }, { name: 'Git', desc: 'VCS' },
-    { name: 'GitHub', desc: 'Dev Platform' }, { name: 'Gemini', desc: 'AI Model' },
-    { name: 'Genkit', desc: 'AI SDK' }, { name: 'MCP', desc: 'Context' },
-    { name: 'LLMs', desc: 'Core Tech' }, { name: 'Prompt Eng', desc: 'Optimization' },
-    { name: 'ML', desc: 'Algorithms' }, { name: 'System Design', desc: 'Architecture' },
   ];
 
   return (
@@ -209,7 +190,7 @@ export default function ExplorePage() {
                       alt={vid.title} 
                       fill 
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      data-ai-hint="video thumbnail"
+                      data-ai-hint="programming code"
                     />
                     <div className="absolute bottom-3 right-3 bg-black/80 px-2 py-1 rounded text-[10px] font-bold border border-white/10">{vid.duration}</div>
                     <div className="absolute top-3 left-3 flex gap-2">

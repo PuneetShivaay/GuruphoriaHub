@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -70,12 +71,12 @@ export default function ResourcesPage() {
   };
 
   const featuredResources = [
-    { title: "React Cheat Sheet", category: "React", type: "PDF", time: "5 min", id: "res-1" },
-    { title: "Firebase Quick Guide", category: "Backend", type: "PDF", time: "8 min", id: "res-2" },
-    { title: "Prompt Engineering Handbook", category: "AI", type: "Ebook", time: "15 min", id: "res-3" },
-    { title: "LLM Engineering Notes", category: "AI", type: "PDF", time: "12 min", id: "res-4" },
-    { title: "Docker Commands Ref", category: "DevOps", type: "Sheet", time: "4 min", id: "res-5" },
-    { title: "Git Commands Masterlist", category: "VCS", type: "PDF", time: "6 min", id: "res-6" },
+    { title: "React Cheat Sheet", category: "React", type: "PDF", time: "5 min", id: "res-tech-1" },
+    { title: "Firebase Quick Guide", category: "Backend", type: "PDF", time: "8 min", id: "res-tech-2" },
+    { title: "Prompt Engineering Handbook", category: "AI", type: "Ebook", time: "15 min", id: "res-tech-3" },
+    { title: "LLM Engineering Notes", category: "AI", type: "PDF", time: "12 min", id: "res-tech-4" },
+    { title: "Docker Commands Ref", category: "DevOps", type: "Sheet", time: "4 min", id: "res-tech-5" },
+    { title: "Git Commands Masterlist", category: "VCS", type: "PDF", time: "6 min", id: "res-tech-6" },
   ];
 
   const aiPrompts = [
@@ -188,7 +189,7 @@ export default function ResourcesPage() {
                     alt={res.title} 
                     fill 
                     className="object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500"
-                    data-ai-hint="document thumbnail"
+                    data-ai-hint="terminal window"
                   />
                   <Badge className="absolute top-4 left-4 bg-primary/20 text-primary border-none text-[10px]">{res.type}</Badge>
                 </div>
@@ -310,7 +311,7 @@ export default function ResourcesPage() {
                       alt={art.title} 
                       fill 
                       className="object-cover group-hover:scale-105 transition-all duration-500"
-                      data-ai-hint="blog cover"
+                      data-ai-hint="software development"
                     />
                     <Badge className="absolute top-4 left-4 bg-primary/20 text-primary border-none text-[10px]">{art.category}</Badge>
                   </div>
