@@ -28,43 +28,43 @@
       "id": "project-resume-analyzer",
       "description": "Resume analyzer tool dashboard",
       "imageUrl": "https://picsum.photos/seed/resume/600/400",
-      "imageHint": "data analysis"
+      "imageHint": "code development"
     },
     {
       "id": "article-ai-trends",
       "description": "Futuristic AI trends visualization",
       "imageUrl": "https://picsum.photos/seed/aitrends/600/400",
-      "imageHint": "artificial intelligence"
+      "imageHint": "machine learning"
     },
     {
       "id": "video-nextjs-ai",
       "description": "Next.js and AI tutorial tutorial thumbnail",
       "imageUrl": "https://picsum.photos/seed/nextai/600/400",
-      "imageHint": "coding tutorial"
+      "imageHint": "programming code"
     },
     {
       "id": "course-thumbnail-placeholder",
       "description": "Default placeholder for course thumbnails",
       "imageUrl": "https://picsum.photos/seed/course-default/600/400",
-      "imageHint": "technology education"
+      "imageHint": "software architecture"
     },
     {
       "id": "team-member-1",
       "description": "Avatar for Alex Johnson",
       "imageUrl": "https://picsum.photos/seed/alex/200/200",
-      "imageHint": "professional man"
+      "imageHint": "professional developer"
     },
     {
       "id": "team-member-2",
       "description": "Avatar for Maria Garcia",
       "imageUrl": "https://picsum.photos/seed/maria/200/200",
-      "imageHint": "professional woman"
+      "imageHint": "software engineer"
     },
     {
       "id": "team-member-3",
       "description": "Avatar for Chris Lee",
       "imageUrl": "https://picsum.photos/seed/chris/200/200",
-      "imageHint": "professional person"
+      "imageHint": "tech lead"
     }
   ]
 }

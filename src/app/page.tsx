@@ -1,3 +1,4 @@
+
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -128,6 +129,7 @@ export default function Home() {
                   height={800}
                   priority
                   className="rounded-[1.5rem] w-full object-cover aspect-square grayscale-[20%] group-hover:grayscale-0 transition duration-700"
+                  data-ai-hint="professional developer"
                 />
               )}
               <div className="absolute bottom-8 left-8 right-8 glass-dark p-6 rounded-2xl border-white/10 backdrop-blur-md">
@@ -218,6 +220,7 @@ export default function Home() {
                       width={600}
                       height={600}
                       className="rounded-2xl w-full object-cover aspect-square grayscale-[10%] group-hover:grayscale-0 transition duration-700"
+                      data-ai-hint="professional developer"
                     />
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -308,6 +311,7 @@ export default function Home() {
                           alt={video.title} 
                           fill 
                           className="object-cover group-hover:scale-105 transition-transform duration-700"
+                          data-ai-hint="programming code"
                         />
                         <div className="absolute inset-0 bg-black/40 group-hover:bg-black/0 transition-colors"></div>
                         <div className="absolute bottom-4 right-4 bg-black/80 px-2 py-1 rounded text-[10px] font-bold border border-white/10">{video.duration}</div>
@@ -359,6 +363,7 @@ export default function Home() {
                           alt={article.title} 
                           fill 
                           className="object-cover group-hover:scale-110 transition-transform duration-700"
+                          data-ai-hint="software architecture"
                         />
                       </div>
                       <div className="space-y-3 flex-grow flex flex-col">

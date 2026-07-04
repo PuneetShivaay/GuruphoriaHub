@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -55,7 +56,7 @@ export default function ProjectsPage() {
     {
       title: 'AI Resume Analyzer',
       desc: 'ATS-friendly resume parser and optimizer using Gemini 1.5 Pro to help candidates land more interviews.',
-      image: 'https://picsum.photos/seed/proj-resume/800/500',
+      image: 'https://picsum.photos/seed/tech-resume/800/500',
       tech: ['Next.js', 'Firebase', 'Gemini AI', 'Tailwind'],
       diff: 'Advanced',
       time: '12 Hours',
@@ -63,7 +64,7 @@ export default function ProjectsPage() {
     {
       title: 'Agentic Chatbot Framework',
       desc: 'A customizable framework for building autonomous agents that can perform tool-calling and memory management.',
-      image: 'https://picsum.photos/seed/proj-agent/800/500',
+      image: 'https://picsum.photos/seed/tech-agent/800/500',
       tech: ['React', 'Genkit', 'Node.js', 'TypeScript'],
       diff: 'Expert',
       time: '20 Hours',
@@ -71,7 +72,7 @@ export default function ProjectsPage() {
     {
       title: 'Real-time Analytics Dashboard',
       desc: 'Production-ready dashboard visualizing real-time metrics with high-performance charts and Firebase integration.',
-      image: 'https://picsum.photos/seed/proj-dash/800/500',
+      image: 'https://picsum.photos/seed/tech-dashboard/800/500',
       tech: ['Next.js', 'Firebase', 'Recharts', 'Clerk'],
       diff: 'Intermediate',
       time: '8 Hours',
@@ -179,7 +180,7 @@ export default function ProjectsPage() {
                     alt={proj.title} 
                     fill 
                     className="object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
-                    data-ai-hint="project screenshot"
+                    data-ai-hint="code development"
                   />
                   <div className="absolute top-4 left-4">
                     <Badge className="bg-primary/20 text-primary border-none text-[10px] uppercase">{proj.diff}</Badge>
