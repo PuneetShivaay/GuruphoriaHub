@@ -48,16 +48,26 @@ export default function Home() {
   const [isLoadingArticles, setIsLoadingArticles] = useState(true);
   const [isLoadingRepos, setIsLoadingRepos] = useState(true);
 
+  // Configurable featured repositories list
+  const featuredRepositories = ["AI-Engineering", "MohakTheVibe", "Otical-SST", "guruphoria-ai-starter", "mcp-server-demo", "firebase-saas-template"];
+
   useEffect(() => {
     async function loadData() {
-      const [latestVideos, latestArticles, latestRepos] = await Promise.all([
+      const [latestVideos, latestArticles, allRepos] = await Promise.all([
         fetchLatestVideos(2),
         fetchLatestArticles(3),
-        fetchGitHubRepositories(4)
+        fetchGitHubRepositories(10)
       ]);
       setVideos(latestVideos);
       setArticles(latestArticles);
-      setRepos(latestRepos);
+      
+      // Filter repos based on featured list or just show the best if list is empty
+      const filtered = allRepos.filter(r => 
+        featuredRepositories.some(name => r.name.toLowerCase().includes(name.toLowerCase()))
+      );
+      
+      setRepos(filtered.length > 0 ? filtered.slice(0, 6) : allRepos.slice(0, 6));
+      
       setIsLoadingVideos(false);
       setIsLoadingArticles(false);
       setIsLoadingRepos(false);
@@ -201,64 +211,76 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Latest Labs (Redesigned: Premium Repository Style) */}
+      {/* Featured Open Source Projects */}
       <section className="w-full py-20 sm:py-32 bg-[#050816] reveal-section">
         <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between mb-12 sm:mb-16">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-12 sm:mb-16 gap-6">
             <div className="space-y-2">
-              <h2 className="text-3xl sm:text-4xl font-bold flex items-center gap-3">
-                <Terminal className="text-primary h-8 w-8" /> Latest Labs
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold flex items-center gap-3">
+                <Github className="text-primary h-8 w-8 sm:h-10 sm:w-10" /> Featured Open Source Projects
               </h2>
-              <p className="text-muted-foreground text-sm sm:text-base">Production-grade projects and experimental frameworks.</p>
+              <p className="text-muted-foreground text-sm sm:text-lg max-w-2xl">Production-grade frameworks and experimental labs maintained by Guruphoria.</p>
             </div>
-            <Button asChild variant="ghost" className="text-xs sm:text-sm font-bold text-muted-foreground hover:text-primary transition-all">
-              <Link href="https://github.com/PuneetShivaay" target="_blank">View GitHub</Link>
+            <Button asChild variant="outline" className="rounded-full border-white/10 glass hover:border-primary/50 transition-all font-bold group px-6">
+              <Link href="https://github.com/PuneetShivaay" target="_blank" className="flex items-center gap-2">
+                View GitHub <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {isLoadingRepos ? (
-              Array.from({ length: 4 }).map((_, i) => (
-                <Card key={i} className="glass p-8 bg-[#101828]/50 border-white/5 animate-pulse h-64" />
+              Array.from({ length: 3 }).map((_, i) => (
+                <Card key={i} className="glass p-8 bg-[#101828]/50 border-white/5 animate-pulse h-64 rounded-[2rem]" />
               ))
             ) : (
               repos.map((repo) => (
-                <Card key={repo.name} className="glass p-6 sm:p-8 group hover:border-primary/50 transition-all duration-500 bg-[#101828]/50 border-white/5 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(14,165,255,0.1)] relative overflow-hidden">
-                  <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-                    <Code2 className="h-24 w-24" />
+                <Card key={repo.name} className="glass p-6 sm:p-8 group hover:border-primary/50 transition-all duration-500 bg-[#101828]/50 border-white/5 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(14,165,255,0.15)] relative overflow-hidden flex flex-col h-full rounded-[2rem]">
+                  <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                    <Terminal className="h-32 w-32" />
                   </div>
                   
                   <div className="relative z-10 flex flex-col h-full">
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center gap-3">
-                        <div className="bg-primary/10 p-2 rounded-lg text-primary">
-                          <Terminal className="h-5 w-5" />
+                        <div className="bg-primary/10 p-2.5 rounded-xl text-primary group-hover:scale-110 transition-transform">
+                          <Code2 className="h-5 w-5" />
                         </div>
-                        <h3 className="text-xl sm:text-2xl font-bold tracking-tight group-hover:text-primary transition-colors">{repo.name}</h3>
+                        <h3 className="text-xl sm:text-2xl font-bold tracking-tight group-hover:text-primary transition-colors truncate max-w-[180px] sm:max-w-none">{repo.name}</h3>
                       </div>
-                      <Badge variant="outline" className="text-[10px] border-white/10 text-muted-foreground font-bold px-3">Public</Badge>
+                      <Badge variant="outline" className="text-[9px] border-white/10 text-muted-foreground font-black uppercase px-2 tracking-widest">Public</Badge>
                     </div>
                     
-                    <p className="text-muted-foreground text-sm leading-relaxed mb-6 line-clamp-2 max-w-[90%]">{repo.description}</p>
+                    <p className="text-muted-foreground text-sm sm:text-base leading-relaxed mb-8 line-clamp-2 flex-grow">{repo.description}</p>
                     
-                    <div className="flex flex-wrap gap-4 mt-auto">
-                      <div className="flex items-center gap-2 text-xs font-medium text-white/60">
-                        <span className="w-2.5 h-2.5 rounded-full bg-primary" /> {repo.language}
+                    <div className="space-y-6 mt-auto">
+                      <div className="flex flex-wrap gap-2">
+                        <Badge className="bg-primary/5 text-primary border-primary/20 text-[10px] font-bold">React</Badge>
+                        <Badge className="bg-primary/5 text-primary border-primary/20 text-[10px] font-bold">TypeScript</Badge>
+                        <Badge className="bg-primary/5 text-primary border-primary/20 text-[10px] font-bold">Genkit</Badge>
                       </div>
-                      <div className="flex items-center gap-2 text-xs font-medium text-white/60">
-                        <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" /> {repo.stars}
+
+                      <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-6 border-t border-white/5">
+                        <div className="flex items-center gap-2 text-xs font-bold text-white/60">
+                          <span className="w-2 h-2 rounded-full bg-primary" /> {repo.language}
+                        </div>
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-white/60">
+                          <Star className="h-3.5 w-3.5 text-yellow-500 fill-yellow-500" /> {repo.stars}
+                        </div>
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-white/60">
+                          <GitFork className="h-3.5 w-3.5" /> {repo.forks}
+                        </div>
+                        <div className="flex items-center gap-1.5 text-[10px] text-white/40 ml-auto font-bold uppercase tracking-widest">
+                          <Calendar className="h-3 w-3" /> {repo.updatedAt}
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2 text-xs font-medium text-white/60">
-                        <GitFork className="h-4 w-4" /> {repo.forks}
-                      </div>
-                      <div className="flex items-center gap-2 text-xs font-medium text-white/40 ml-auto">
-                        <Calendar className="h-3.5 w-3.5" /> Updated {repo.updatedAt}
-                      </div>
+                      
+                      <Button asChild variant="outline" className="w-full glass border-white/10 hover:bg-primary hover:text-white hover:border-primary rounded-full font-bold transition-all h-12 shadow-lg group-hover:shadow-primary/25">
+                        <Link href={repo.url} target="_blank" className="flex items-center justify-center gap-2">
+                          View Repository <ExternalLink className="h-4 w-4" />
+                        </Link>
+                      </Button>
                     </div>
-                    
-                    <Button asChild variant="outline" size="sm" className="mt-8 w-full glass border-white/10 hover:bg-primary hover:text-white hover:border-primary rounded-full font-bold transition-all">
-                      <Link href={repo.url} target="_blank">Explore Project <ArrowRight className="ml-2 h-4 w-4" /></Link>
-                    </Button>
                   </div>
                 </Card>
               ))
@@ -339,7 +361,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Engineering Blog (Redesigned: Clean Typography Focus) */}
+      {/* Engineering Blog */}
       <section className="w-full py-20 sm:py-32 bg-[#050816] reveal-section">
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-between mb-12 sm:mb-16">
